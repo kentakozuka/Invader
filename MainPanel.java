@@ -125,24 +125,20 @@ public class MainPanel extends JPanel implements Runnable,
      */
     public void run() {
         while (true) {
+        	// 移動
             move();
-
             // 発射ボタンが押されたら弾を発射
             if (spacePressed) {
                 tryToFire();
             }
-
             // エイリアンの攻撃
             alienAttack();
-
             // 衝突判定
             collisionDetection();
-
+            // 音楽再生
             WaveEngine.render();
-
             // 再描画
             repaint();
-
             // 休止
             try {
                 Thread.sleep(20);

@@ -16,7 +16,6 @@ public class Invader extends JFrame {
         setTitle("サウンドエンジンテスト");
         // サイズ変更不可
         setResizable(false);
-
         // メインパネルを作成してフレームに追加
         MainPanel panel = new MainPanel();
         Container contentPane = this.getContentPane();
