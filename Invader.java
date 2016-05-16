@@ -19,11 +19,11 @@ public class Invader extends JFrame {
 
         // メインパネルを作成してフレームに追加
         MainPanel panel = new MainPanel();
-        Container contentPane = getContentPane();
+        Container contentPane = this.getContentPane();
         contentPane.add(panel);
 
         // パネルサイズに合わせてフレームサイズを自動設定
-        pack();
+        this.pack();
     }
 
     public static void main(String[] args) {

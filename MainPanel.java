@@ -61,7 +61,7 @@ public class MainPanel extends JPanel implements Runnable,
     // キーの状態（このキー状態を使ってプレイヤーを移動する）
     private boolean leftPressed = false;
     private boolean rightPressed = false;
-    private boolean firePressed = false;
+    private boolean spacePressed = false;
 
     // ゲームループ用スレッド
     private Thread gameLoop;
@@ -128,7 +128,7 @@ public class MainPanel extends JPanel implements Runnable,
             move();
 
             // 発射ボタンが押されたら弾を発射
-            if (firePressed) {
+            if (spacePressed) {
                 tryToFire();
             }
 
@@ -352,7 +352,7 @@ public class MainPanel extends JPanel implements Runnable,
             rightPressed = true;
         }
         if (key == KeyEvent.VK_SPACE) {
-            firePressed = true;
+            spacePressed = true;
         }
     }
 
@@ -371,7 +371,7 @@ public class MainPanel extends JPanel implements Runnable,
             rightPressed = false;
         }
         if (key == KeyEvent.VK_SPACE) {
-            firePressed = false;
+            spacePressed = false;
         }
     }
 }
