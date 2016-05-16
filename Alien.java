@@ -17,10 +17,8 @@ public class Alien {
     private static final int MOVE_WIDTH = 210;
     // エイリアンの墓（画面に表示されない場所）
     private static final Point TOMB = new Point(-50, -50);
-
     // 移動スピード
     private int speed;
-
     // エイリアンの位置（x座標）
     private int x;
     // エイリアンの位置（y座標）
@@ -31,17 +29,14 @@ public class Alien {
     private int height;
     // エイリアンの画像
     private Image image;
-
     // エイリアンの移動範囲
     private int left;
     private int right;
-
     // エイリアンが生きてるかどうか
     private boolean isAlive;
-
     // メインパネルへの参照
     private MainPanel panel;
-
+    // コンストラクタ
     public Alien(int x, int y, int speed, MainPanel panel) {
         this.x = x;
         this.y = y;
