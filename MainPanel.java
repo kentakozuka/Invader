@@ -13,10 +13,6 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JPanel;
 
-/*
- * Created on 2005/02/09
- *
- */
 
 /**
  * メインパネル
