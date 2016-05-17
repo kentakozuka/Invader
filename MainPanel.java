@@ -13,10 +13,6 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JPanel;
 
-/*
- * Created on 2005/02/09
- *
- */
 
 /**
  * メインパネル
@@ -35,25 +31,33 @@ public class MainPanel extends JPanel implements Runnable,
     private static final int UP = 2;
     private static final int DOWN = 3;
     // 連続発射できる弾の数
-    private static final int NUM_SHOT = 20;
+    private static final int NUM_SHOT = 100;
     // 発射できる間隔（弾の充填時間）
-    private static final int FIRE_INTERVAL = 100;
+    private static final int FIRE_INTERVAL = 10;
     // エイリアンの数
     private static final int NUM_ALIEN = 50;
+    //　ボスの数
+    private static final int NUM_BOSS = 1;
+    // 隕石の数
+    private static final int NUM_METEORITE = 0;
     // ビームの数
-    private static final int NUM_BEAM = 20;
-    // プレイヤー
+    private static final int NUM_BEAM = 0;
+    // ステージ数
+    private static final int NUM_STAGE = 100;
+    // 各インスタンスの宣言
     private Player player;
-    // 弾
     private Shot[] shots;
+    private Alien[] aliens;
+    private Boss[] boss;
+    private Meteorite[] meteorites;
+    private Beam[] beams;
+    private Explosion explosion;
     // 最後に発射した時間
     private long lastFire = 0;
-    // エイリアン
-    private Alien[] aliens;
-    // ビーム
-    private Beam[] beams;
-    // 爆発エフェクト
-    private Explosion explosion;
+    private int dieCount = 0;
+    private int stage = 1;
+    // 雑魚敵の全滅確認
+    private boolean alienAllClear = false;
     // キーの状態（このキー状態を使ってプレイヤーを移動する）
     private boolean leftPressed = false;
     private boolean rightPressed = false;
@@ -75,7 +79,7 @@ public class MainPanel extends JPanel implements Runnable,
 
         // ゲームの初期化
         initGame();
-
+    
         rand = new Random();
 
         // サウンドをロード
@@ -113,12 +117,12 @@ public class MainPanel extends JPanel implements Runnable,
         this.gameLoop.start();
     }
 
-    /**
+	/**
      * ゲームループ
      * Runnableインターフェースの抽象メソッドrun()のオーバーライド
      */
     public void run() {
-        while (true) {
+        while (stage <= NUM_STAGE) {
         	// 移動
             this.move();
             // 発射ボタンが押されたら弾を発射
@@ -126,7 +130,11 @@ public class MainPanel extends JPanel implements Runnable,
                 tryToFire();
             }
             // エイリアンの攻撃
-            this.alienAttack();
+            if(alienAllClear == false){
+            	this.alienAttack();
+            } else {
+            	//this.bossAttack();
+            }
             // 衝突判定
             this.collisionDetection();
             // 音楽再生
@@ -160,33 +168,54 @@ public class MainPanel extends JPanel implements Runnable,
         for (int i = 0; i < NUM_ALIEN; i++) {
             aliens[i] = new Alien(20 + (i % 10) * 40, 20 + (i / 10) * 40, 3, this);
         }
-
+        
+        // ボスを作成
+        boss = new Boss[NUM_BOSS];
+    	for (int i = 0; i <NUM_BOSS; i++){
+    		boss[i] = new Boss(250 , 30, 3,this);
+    	}
+    	
+        // 隕石を作成
+        meteorites = new Meteorite[NUM_METEORITE];
+        for (int i = 0; i < NUM_METEORITE; i++) {
+        	meteorites[i] = new Meteorite((new Random()).nextInt(this.WIDTH) , -(new Random()).nextInt(this.HEIGHT), 1, this);
+        }
+        
         // ビームを作成
         beams = new Beam[NUM_BEAM];
         for (int i = 0; i < NUM_BEAM; i++) {
             beams[i] = new Beam(this);
         }
     }
-
+    
     /**
      * 移動処理
      */
     private void move() {
         // プレイヤーを移動する
-        // 何も押されていないときは移動しない
         if (leftPressed) {
             player.move(LEFT);
         } else if (rightPressed) {
             player.move(RIGHT);
-        } else if (upPressed) {
+        }
+        if (upPressed) {
         	player.move(UP);
         } else if (downPressed) {
         	player.move(DOWN);
         }
 
         // エイリアンを移動する
-        for (int i = 0; i < NUM_ALIEN; i++) {
-            aliens[i].move();
+        if(alienAllClear == true){
+        	boss[stage].move();
+        } else  {        	
+	        for (int i = 0; i < NUM_ALIEN; i++) {
+	            aliens[i].move();
+	        }
+        }
+ 
+        // 隕石を移動する
+        for (int i = 0; i < NUM_METEORITE; i++) {
+            meteorites[i].move();
         }
 
         // 弾を移動する
@@ -257,24 +286,52 @@ public class MainPanel extends JPanel implements Runnable,
      *  
      */
     private void collisionDetection() {
-        // エイリアンと弾の衝突検出
-        for (int i = 0; i < NUM_ALIEN; i++) {
-            for (int j = 0; j < NUM_SHOT; j++) {
-                if (aliens[i].collideWith(shots[j])) {
-                    // i番目のエイリアンとj番目の弾が衝突
-                    // 爆発エフェクト生成
-                    explosion = new Explosion(aliens[i].getPos().x, aliens[i].getPos().y);
-                    // エイリアンは死ぬ
-                    aliens[i].die();
-                    // 断末魔
-                    WaveEngine.play(1);
-                    // 弾は保管庫へ（保管庫へ送らなければ貫通弾になる）
-                    shots[j].store();
-                    // エイリアンが死んだらもうループまわす必要なし
-                    break;
-                }
-            }
-        }
+    	if(alienAllClear == true){
+		   for (int j = 0; j < NUM_SHOT; j++) {
+	            if (boss[stage].collideWith(shots[j])) {
+	                // i番目のエイリアンとj番目の弾が衝突
+	                // 爆発エフェクト生成
+	                explosion = new Explosion(boss[stage].getPos().x, boss[stage].getPos().y);
+	                // ボスは死ぬ
+	                boss[stage].die();
+	                //　次のステージへ
+	                alienAllClear = false;
+	                stage ++;
+	                // 断末魔
+	                WaveEngine.play(1);
+	                // 弾は保管庫へ（保管庫へ送らなければ貫通弾になる）
+	                shots[j].store();
+	                // エイリアンが死んだらもうループまわす必要なし
+	                break;
+	            }
+	        }
+    	} else {
+	        // エイリアンと弾の衝突検出
+	        for (int i = 0 ; i < NUM_ALIEN; i++) {
+	            for (int j = 0; j < NUM_SHOT; j++) {
+	                if (aliens[i].collideWith(shots[j])) {
+	                    // i番目のエイリアンとj番目の弾が衝突
+	                    // 爆発エフェクト生成
+	                    explosion = new Explosion(aliens[i].getPos().x, aliens[i].getPos().y);
+	                    // エイリアンは死ぬ
+	                    aliens[i].die();
+	                    dieCount++;
+	                    // 全滅か判断
+	                    if(dieCount == NUM_ALIEN){
+	                    	alienAllClear = true;
+	                    }
+	                    // 断末魔
+	                    WaveEngine.play(1);
+	                    // 弾は保管庫へ（保管庫へ送らなければ貫通弾になる）
+	                    shots[j].store();
+	                    // エイリアンが死んだらもうループまわす必要なし
+	                    break;
+	                }
+	            }
+	        }
+    	}
+        
+        
         
         // プレーヤーとビームの衝突検出
         for (int i = 0; i < NUM_BEAM; i++) {
@@ -290,6 +347,35 @@ public class MainPanel extends JPanel implements Runnable,
                 initGame();
             }
         }
+        
+        // プレーヤーと隕石の衝突検出
+        for (int i = 0; i < NUM_METEORITE; i++) {
+            if (player.collideWith(meteorites[i])) {
+                // 爆発エフェクト生成
+                explosion = new Explosion(player.getPos().x, player.getPos().y);
+                // 爆発音
+                WaveEngine.play(0);
+                // ゲームオーバー、ゲームを初期化
+                initGame();
+            }
+        }
+        
+        // 隕石と弾の衝突検出
+        for (int i = 0; i < NUM_METEORITE; i++) {
+            for (int j = 0; j < NUM_SHOT; j++) {
+                if (meteorites[i].collideWith(shots[j])) {
+                    // i番目の隕石とj番目の弾が衝突
+                    // 爆発エフェクト生成
+                    explosion = new Explosion(meteorites[i].getPos().x, meteorites[i].getPos().y);
+                    // プレイヤーは死ぬ
+                    meteorites[i].initMeteorite();
+                    // 弾は保管庫へ（保管庫へ送らなければ貫通弾になる）
+                    shots[j].store();
+                    // 隕石が無くなったら、もうループまわす必要なし
+                    break;
+                }
+            }
+        }        
     }
 
     /**
@@ -308,8 +394,19 @@ public class MainPanel extends JPanel implements Runnable,
         player.draw(g);
 
         // エイリアンを描画
-        for (int i = 0; i < NUM_ALIEN; i++) {
-            aliens[i].draw(g);
+        if(alienAllClear == false){
+	        for (int i = 0; i < NUM_ALIEN; i++) {
+	            aliens[i].draw(g);
+	        }
+    	} else {
+	        for (int i = 0; i<NUM_BOSS ; i++){
+	        	boss[i].draw(g);
+	        }
+    	}
+        
+        // 隕石を描画
+        for (int i = 0; i < NUM_METEORITE; i++) {
+            meteorites[i].draw(g);
         }
 
         // 弾を描画
@@ -380,4 +477,9 @@ public class MainPanel extends JPanel implements Runnable,
             spacePressed = false;
         }
     }
+
+	
+    public static int getWIDTH() {
+		return WIDTH;
+	}
 }
