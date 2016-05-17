@@ -14,7 +14,7 @@ import javax.swing.ImageIcon;
  */
 public class Alien {
     // エイリアンの移動範囲
-    private static final int MOVE_WIDTH = MainPanel.WIDTH - 300;
+    private static final int MOVE_WIDTH = 200;
     // エイリアンの墓（画面に表示されない場所）
     private static final Point TOMB = new Point(-50, -50);
     // 移動スピード
