@@ -63,8 +63,14 @@ public class Player {
         if (x < 0) {
             x = 0;
         }
-        if (x > MainPanel.WIDTH - width) {
-            x = MainPanel.WIDTH - width;
+        if (x > MainPanel.WIDTH - this.width) {
+            x = MainPanel.WIDTH - this.width;
+        }
+        if (y < 0) {
+        	y = 0;
+        }
+        if (y > MainPanel.HEIGHT - this.height) {
+        	y = MainPanel.HEIGHT - this.height;
         }
     }
 
