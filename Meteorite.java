@@ -60,12 +60,9 @@ public class Meteorite {
     	// 下に進む
         y += speed;
 
-        // 移動範囲を超えていたら反転移動
-        if (x < left) {
-            speed = -speed;
-        }
-        if (x > right) {
-            speed = -speed;
+        // ウィンドウの下まで行ったら上に移動
+        if (this.y > MainPanel.HEIGHT) {
+            this.y = 0;
         }
     }
 
@@ -77,7 +74,7 @@ public class Meteorite {
      */
     public boolean collideWith(Shot shot) {
         // 隕石の矩形を求める
-        Rectangle rectAlien = new Rectangle(x, y, width, height);
+        Rectangle rectMeteorite = new Rectangle(x, y, width, height);
         // 弾の矩形を求める
         Point pos = shot.getPos();
         Rectangle rectShot = new Rectangle(pos.x, pos.y, 
@@ -85,7 +82,7 @@ public class Meteorite {
 
         // 矩形同士が重なっているか調べる
         // 重なっていたら衝突している
-        return rectAlien.intersects(rectShot);
+        return rectMeteorite.intersects(rectShot);
     }
 
     /**
@@ -103,7 +100,7 @@ public class Meteorite {
      * @param width 隕石の幅
      */
     public int getWidth() {
-        return width;
+        return this.width;
     }
 
     /**
@@ -112,7 +109,7 @@ public class Meteorite {
      * @return height 隕石の高さ
      */
     public int getHeight() {
-        return height;
+        return this.height;
     }
 
     /**
@@ -121,7 +118,7 @@ public class Meteorite {
      * @return 隕石の位置座標
      */
     public Point getPos() {
-        return new Point(x, y);
+        return new Point(this.x, this.y);
     }
 
     /**

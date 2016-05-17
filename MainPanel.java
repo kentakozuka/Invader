@@ -33,7 +33,7 @@ public class MainPanel extends JPanel implements Runnable,
     // 連続発射できる弾の数
     private static final int NUM_SHOT = 20;
     // 発射できる間隔（弾の充填時間）
-    private static final int FIRE_INTERVAL = 100;
+    private static final int FIRE_INTERVAL = 150;
     // エイリアンの数
     private static final int NUM_ALIEN = 50;
     // 隕石の数
@@ -159,7 +159,7 @@ public class MainPanel extends JPanel implements Runnable,
         // 隕石を作成
         meteorites = new Meteorite[NUM_METEORITE];
         for (int i = 0; i < NUM_METEORITE; i++) {
-        	meteorites[i] = new Meteorite(20 + (i % 10) * 40, 20 + (i / 10) * 40, 1, this);
+        	meteorites[i] = new Meteorite((new Random()).nextInt(this.WIDTH) , -(new Random()).nextInt(this.HEIGHT), 1, this);
         }
 
         // ビームを作成
@@ -174,12 +174,12 @@ public class MainPanel extends JPanel implements Runnable,
      */
     private void move() {
         // プレイヤーを移動する
-        // 何も押されていないときは移動しない
         if (leftPressed) {
             player.move(LEFT);
         } else if (rightPressed) {
             player.move(RIGHT);
-        } else if (upPressed) {
+        }
+        if (upPressed) {
         	player.move(UP);
         } else if (downPressed) {
         	player.move(DOWN);
