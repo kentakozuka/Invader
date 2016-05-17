@@ -27,23 +27,19 @@ import javax.swing.JPanel;
 public class MainPanel extends JPanel implements Runnable, 
 												KeyListener {
     // パネルサイズ
-    public static final int WIDTH = 640;
-    public static final int HEIGHT = 480;
-
+    public static final int WIDTH = 1500;
+    public static final int HEIGHT = 600;
     // 方向定数
     private static final int LEFT = 0;
     private static final int RIGHT = 1;
-
     // 連続発射できる弾の数
-    private static final int NUM_SHOT = 50;
+    private static final int NUM_SHOT = 20;
     // 発射できる間隔（弾の充填時間）
-    private static final int FIRE_INTERVAL = 20;
-
+    private static final int FIRE_INTERVAL = 100;
     // エイリアンの数
     private static final int NUM_ALIEN = 50;
     // ビームの数
     private static final int NUM_BEAM = 20;
-
     // プレイヤー
     private Player player;
     // 弾
@@ -54,24 +50,18 @@ public class MainPanel extends JPanel implements Runnable,
     private Alien[] aliens;
     // ビーム
     private Beam[] beams;
-
     // 爆発エフェクト
     private Explosion explosion;
-
     // キーの状態（このキー状態を使ってプレイヤーを移動する）
     private boolean leftPressed = false;
     private boolean rightPressed = false;
     private boolean spacePressed = false;
-
     // ゲームループ用スレッド
     private Thread gameLoop;
-
     // 乱数発生器
     private Random rand;
-
     // サウンド
     private static String[] soundNames = {"bom28_a.wav", "puu38.wav", "puu51.wav"};
-
     // コンストラクタ
     public MainPanel() {
         // パネルの推奨サイズを設定、pack()するときに必要
@@ -111,34 +101,34 @@ public class MainPanel extends JPanel implements Runnable,
         // BGMを再生
         MidiEngine.play(0);
         
-
         // キーイベントリスナーを登録
         addKeyListener(this);
 
         // ゲームループ開始
-        gameLoop = new Thread(this);
-        gameLoop.start();
+        this.gameLoop = new Thread(this);
+        this.gameLoop.start();
     }
 
     /**
      * ゲームループ
+     * Runnableインターフェースの抽象メソッドrun()のオーバーライド
      */
     public void run() {
         while (true) {
         	// 移動
-            move();
+            this.move();
             // 発射ボタンが押されたら弾を発射
             if (spacePressed) {
                 tryToFire();
             }
             // エイリアンの攻撃
-            alienAttack();
+            this.alienAttack();
             // 衝突判定
-            collisionDetection();
+            this.collisionDetection();
             // 音楽再生
             WaveEngine.render();
             // 再描画
-            repaint();
+            this.repaint();
             // 休止
             try {
                 Thread.sleep(20);
