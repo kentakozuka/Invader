@@ -206,7 +206,7 @@ public class MainPanel extends JPanel implements Runnable,
 
         // エイリアンを移動する
         if(alienAllClear == true){
-        	boss[stage].move();
+        	//boss[stage].move();
         } else  {        	
 	        for (int i = 0; i < NUM_ALIEN; i++) {
 	            aliens[i].move();
