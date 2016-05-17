@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 /**
  * インベーダーゲーム本体
  * 
- * @author mori
+ * @author anonimous
  *  
  */
 public class Invader extends JFrame {

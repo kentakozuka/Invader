@@ -32,6 +32,8 @@ public class MainPanel extends JPanel implements Runnable,
     // 方向定数
     private static final int LEFT = 0;
     private static final int RIGHT = 1;
+    private static final int UP = 2;
+    private static final int DOWN = 3;
     // 連続発射できる弾の数
     private static final int NUM_SHOT = 20;
     // 発射できる間隔（弾の充填時間）
@@ -55,6 +57,8 @@ public class MainPanel extends JPanel implements Runnable,
     // キーの状態（このキー状態を使ってプレイヤーを移動する）
     private boolean leftPressed = false;
     private boolean rightPressed = false;
+    private boolean upPressed = false;
+    private boolean downPressed = false;
     private boolean spacePressed = false;
     // ゲームループ用スレッド
     private Thread gameLoop;
@@ -174,6 +178,10 @@ public class MainPanel extends JPanel implements Runnable,
             player.move(LEFT);
         } else if (rightPressed) {
             player.move(RIGHT);
+        } else if (upPressed) {
+        	player.move(UP);
+        } else if (downPressed) {
+        	player.move(DOWN);
         }
 
         // エイリアンを移動する
@@ -332,10 +340,16 @@ public class MainPanel extends JPanel implements Runnable,
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_LEFT) {
-            leftPressed = true;
+            this.leftPressed = true;
         }
         if (key == KeyEvent.VK_RIGHT) {
             rightPressed = true;
+        }
+        if (key == KeyEvent.VK_UP) {
+        	upPressed = true;
+        }
+        if (key == KeyEvent.VK_DOWN) {
+        	downPressed = true;
         }
         if (key == KeyEvent.VK_SPACE) {
             spacePressed = true;
@@ -355,6 +369,12 @@ public class MainPanel extends JPanel implements Runnable,
         }
         if (key == KeyEvent.VK_RIGHT) {
             rightPressed = false;
+        }
+        if (key == KeyEvent.VK_UP) {
+        	upPressed = false;
+        }
+        if (key == KeyEvent.VK_DOWN) {
+        	downPressed = false;
         }
         if (key == KeyEvent.VK_SPACE) {
             spacePressed = false;

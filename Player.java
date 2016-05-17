@@ -15,13 +15,14 @@ public class Player {
     // 方向定数
     private static final int LEFT = 0;
     private static final int RIGHT = 1;
+    private static final int UP = 2;
+    private static final int DOWN = 3;
 
     // 移動スピード
     private static final int SPEED = 5;
 
-    // プレイヤーの位置（x座標）
+    // プレイヤーの位置（x, y座標）
     private int x;
-    // プレイヤーの位置（y座標）
     private int y;
     // プレイヤーの幅
     private int width;
@@ -52,6 +53,10 @@ public class Player {
             x -= SPEED;
         } else if (dir == RIGHT) {
             x += SPEED;
+        } else if (dir == UP) {
+        	y -= SPEED;
+        } else if (dir == DOWN) {
+        	y += SPEED;
         }
 
         // 画面の外に出ていたら中に戻す
