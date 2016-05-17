@@ -27,7 +27,7 @@ import javax.swing.JPanel;
 public class MainPanel extends JPanel implements Runnable, 
 												KeyListener {
     // パネルサイズ
-    public static final int WIDTH = 1500;
+    public static final int WIDTH = 600;
     public static final int HEIGHT = 600;
     // 方向定数
     private static final int LEFT = 0;
