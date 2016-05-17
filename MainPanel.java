@@ -308,6 +308,22 @@ public class MainPanel extends JPanel implements Runnable,
                 initGame();
             }
         }
+        // 隕石と弾の衝突検出
+        for (int i = 0; i < NUM_METEORITE; i++) {
+            for (int j = 0; j < NUM_SHOT; j++) {
+                if (meteorites[i].collideWith(shots[j])) {
+                    // i番目の隕石とj番目の弾が衝突
+                    // 爆発エフェクト生成
+                    explosion = new Explosion(meteorites[i].getPos().x, meteorites[i].getPos().y);
+                    // エイリアンは死ぬ
+                    meteorites[i].initMeteorite();
+                    // 弾は保管庫へ（保管庫へ送らなければ貫通弾になる）
+                    shots[j].store();
+                    // 隕石が無くなったら、もうループまわす必要なし
+                    break;
+                }
+            }
+        }
     }
 
     /**
@@ -403,4 +419,9 @@ public class MainPanel extends JPanel implements Runnable,
             spacePressed = false;
         }
     }
+
+	
+    public static int getWIDTH() {
+		return WIDTH;
+	}
 }

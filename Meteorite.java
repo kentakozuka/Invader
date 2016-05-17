@@ -2,6 +2,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 
@@ -62,10 +63,17 @@ public class Meteorite {
 
         // ウィンドウの下まで行ったら上に移動
         if (this.y > MainPanel.HEIGHT) {
-            this.y = 0;
+            this.initMeteorite();
         }
     }
 
+    /**
+     * 隕石の位置の初期化
+     */
+    public void initMeteorite() {
+    	this.x = (new Random()).nextInt(MainPanel.getWIDTH());
+    	this.y = 0;
+    }
     /**
      * 隕石と弾の衝突を判定する
      * 
