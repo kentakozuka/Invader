@@ -19,9 +19,8 @@ public class Meteorite {
     private static final Point TOMB = new Point(-50, -50);
     // 移動スピード
     private int speed;
-    // 隕石の位置（x座標）
+    // 隕石の位置（x, y座標）
     private int x;
-    // 隕石の位置（y座標）
     private int y;
     // 隕石の幅
     private int width;
@@ -58,7 +57,8 @@ public class Meteorite {
      *  
      */
     public void move() {
-        x += speed;
+    	// 下に進む
+        y += speed;
 
         // 移動範囲を超えていたら反転移動
         if (x < left) {

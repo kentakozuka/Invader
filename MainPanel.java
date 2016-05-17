@@ -40,20 +40,19 @@ public class MainPanel extends JPanel implements Runnable,
     private static final int FIRE_INTERVAL = 100;
     // エイリアンの数
     private static final int NUM_ALIEN = 50;
+    // 隕石の数
+    private static final int NUM_METEORITE = 20;
     // ビームの数
     private static final int NUM_BEAM = 20;
-    // プレイヤー
+    // 各インスタンスの宣言
     private Player player;
-    // 弾
     private Shot[] shots;
+    private Alien[] aliens;
+    private Meteorite[] meteorites;
+    private Beam[] beams;
+    private Explosion explosion;
     // 最後に発射した時間
     private long lastFire = 0;
-    // エイリアン
-    private Alien[] aliens;
-    // ビーム
-    private Beam[] beams;
-    // 爆発エフェクト
-    private Explosion explosion;
     // キーの状態（このキー状態を使ってプレイヤーを移動する）
     private boolean leftPressed = false;
     private boolean rightPressed = false;
@@ -160,6 +159,12 @@ public class MainPanel extends JPanel implements Runnable,
         for (int i = 0; i < NUM_ALIEN; i++) {
             aliens[i] = new Alien(20 + (i % 10) * 40, 20 + (i / 10) * 40, 3, this);
         }
+        
+        // 隕石を作成
+        meteorites = new Meteorite[NUM_METEORITE];
+        for (int i = 0; i < NUM_METEORITE; i++) {
+        	meteorites[i] = new Meteorite(20 + (i % 10) * 40, 20 + (i / 10) * 40, 1, this);
+        }
 
         // ビームを作成
         beams = new Beam[NUM_BEAM];
@@ -187,6 +192,11 @@ public class MainPanel extends JPanel implements Runnable,
         // エイリアンを移動する
         for (int i = 0; i < NUM_ALIEN; i++) {
             aliens[i].move();
+        }
+        
+        // 隕石を移動する
+        for (int i = 0; i < NUM_METEORITE; i++) {
+            meteorites[i].move();
         }
 
         // 弾を移動する
@@ -310,6 +320,11 @@ public class MainPanel extends JPanel implements Runnable,
         // エイリアンを描画
         for (int i = 0; i < NUM_ALIEN; i++) {
             aliens[i].draw(g);
+        }
+        
+        // 隕石を描画
+        for (int i = 0; i < NUM_METEORITE; i++) {
+            meteorites[i].draw(g);
         }
 
         // 弾を描画
