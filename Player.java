@@ -85,14 +85,23 @@ public class Player {
         Rectangle rectPlayer = new Rectangle(x, y, width, height);
         // ビームの矩形を求める
         Point pos = beam.getPos();
-        Rectangle rectBeam = new Rectangle(pos.x, pos.y, 
-                beam.getWidth(), beam.getHeight());
+        Rectangle rectBeam = new Rectangle(pos.x, pos.y, beam.getWidth(), beam.getHeight());
 
         // 矩形同士が重なっているか調べる
         // 重なっていたら衝突している
         return rectPlayer.intersects(rectBeam);
     }
+    public boolean collideWith(Meteorite meteorite) {
+    	// プレイヤーの矩形を求める
+        Rectangle rectPlayer = new Rectangle(this.x, this.y, this.width, this.height);
+        // ビームの矩形を求める
+        Point pos = meteorite.getPos();
+        Rectangle rectMeteorite = new Rectangle(pos.x, pos.y, meteorite.getWidth(), meteorite.getHeight());
 
+        // 矩形同士が重なっているか調べる
+        // 重なっていたら衝突している
+        return rectPlayer.intersects(rectMeteorite);
+	}
     /**
      * プレイヤーを描画する
      * 
@@ -144,4 +153,7 @@ public class Player {
         width = image.getWidth(panel);
         height = image.getHeight(panel);
     }
+
+	
+    
 }

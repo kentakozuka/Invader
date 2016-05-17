@@ -296,6 +296,18 @@ public class MainPanel extends JPanel implements Runnable,
                 initGame();
             }
         }
+        
+        // プレーヤーと隕石の衝突検出
+        for (int i = 0; i < NUM_METEORITE; i++) {
+            if (player.collideWith(meteorites[i])) {
+                // 爆発エフェクト生成
+                explosion = new Explosion(player.getPos().x, player.getPos().y);
+                // 爆発音
+                WaveEngine.play(0);
+                // ゲームオーバー、ゲームを初期化
+                initGame();
+            }
+        }
     }
 
     /**
