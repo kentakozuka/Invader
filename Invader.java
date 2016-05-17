@@ -10,6 +10,7 @@ import javax.swing.JFrame;
  */
 public class Invader extends JFrame {
 	
+	
 	// コンストラクタ
     public Invader() {
         // タイトルを設定
