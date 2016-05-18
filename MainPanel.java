@@ -390,7 +390,7 @@ public class MainPanel extends JPanel implements Runnable,
                     // i番目の隕石とj番目の弾が衝突
                     // 爆発エフェクト生成
                     explosion = new Explosion(meteorites[i].getPos().x, meteorites[i].getPos().y);
-                    // プレイヤーは死ぬ
+                    // 隕石は再生成
                     meteorites[i].initMeteorite();
                     // 弾は保管庫へ（保管庫へ送らなければ貫通弾になる）
                     shots[j].store();
