@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Label;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -24,6 +25,8 @@ public class MainPanel extends JPanel implements Runnable,
 												KeyListener {
 	
 
+	// 得点ラベル
+	Label pointDispLabel; 
     // パネルサイズ
     public static final int WIDTH = 600;
     public static final int HEIGHT = 600;
@@ -145,7 +148,10 @@ public class MainPanel extends JPanel implements Runnable,
             // 音楽再生
             WaveEngine.render();
             // 再描画
+            pointDispLabel.setText(new Integer(this.manager.getPoint()).toString());
             this.repaint();
+            
+            
             // 休止
             try {
                 Thread.sleep(20);
@@ -159,8 +165,11 @@ public class MainPanel extends JPanel implements Runnable,
      * ゲームの初期化
      */
     private void initGame() {
+    	
     	// Managerの生成
         manager = new Manager();
+        pointDispLabel = new Label(new Integer(this.manager.getPoint()).toString());
+        this.add(pointDispLabel);
         
         // プレイヤーを作成
         player = new Player(0, HEIGHT - 20, this);
@@ -496,7 +505,4 @@ public class MainPanel extends JPanel implements Runnable,
     public static int getWIDTH() {
 		return WIDTH;
 	}
-    public Manager getManager() {
-    	return manager;
-    }
 }
