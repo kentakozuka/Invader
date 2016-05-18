@@ -36,6 +36,7 @@ public class Alien {
     private boolean isAlive;
     // メインパネルへの参照
     private MainPanel panel;
+    
     // コンストラクタ
     public Alien(int x, int y, int speed, MainPanel panel) {
         this.x = x;

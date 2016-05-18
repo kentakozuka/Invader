@@ -33,7 +33,7 @@ public class MainPanel extends JPanel implements Runnable,
     // 連続発射できる弾の数
     private static final int NUM_SHOT = 50;
     // 発射できる間隔（弾の充填時間）
-    private static final int FIRE_INTERVAL = 30;
+    private static final int FIRE_INTERVAL = 150;
     // エイリアンの数
     private static final int NUM_ALIEN = 50;
     //　ボスの数
@@ -41,7 +41,7 @@ public class MainPanel extends JPanel implements Runnable,
     // 隕石の数
     private static final int NUM_METEORITE = 15;
     // ビームの数
-    private static final int NUM_BEAM = 0;
+    private static final int NUM_BEAM = 20;
     // ステージ数
     private static final int NUM_STAGE = 1;
     // 各インスタンスの宣言
