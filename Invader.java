@@ -21,7 +21,6 @@ public class Invader extends JFrame {
         MainPanel panel = new MainPanel();
         Container contentPane = this.getContentPane();
         contentPane.add(panel);
-
         // パネルサイズに合わせてフレームサイズを自動設定
         this.pack();
     }

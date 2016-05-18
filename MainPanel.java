@@ -45,6 +45,7 @@ public class MainPanel extends JPanel implements Runnable,
     // ステージ数
     private static final int NUM_STAGE = 1;
     // 各インスタンスの宣言
+    private Manager manager;
     private Player player;
     private Shot[] shots;
     private Alien[] aliens;
@@ -137,6 +138,8 @@ public class MainPanel extends JPanel implements Runnable,
             }
             // 衝突判定
             this.collisionDetection();
+            // 得点カウント
+            manager.countPoint();
             // 音楽再生
             WaveEngine.render();
             // 再描画
@@ -154,6 +157,9 @@ public class MainPanel extends JPanel implements Runnable,
      * ゲームの初期化
      */
     private void initGame() {
+    	// Managerの生成
+        manager = new Manager();
+        
         // プレイヤーを作成
         player = new Player(0, HEIGHT - 20, this);
 
@@ -289,7 +295,7 @@ public class MainPanel extends JPanel implements Runnable,
     	if(alienAllClear == true){
 		   for (int j = 0; j < NUM_SHOT; j++) {
 	            if (boss[stage].collideWith(shots[j])) {
-	                // i番目のエイリアンとj番目の弾が衝突
+	                // i番目のボスとj番目の弾が衝突
 	                // 爆発エフェクト生成
 	                explosion = new Explosion(boss[stage].getPos().x, boss[stage].getPos().y);
 	                // ボスは死ぬ
@@ -316,6 +322,8 @@ public class MainPanel extends JPanel implements Runnable,
 	                    // エイリアンは死ぬ
 	                    aliens[i].die();
 	                    dieCount++;
+	                    //死んだ数をmanagerクラスに格納（得点を数えるため）
+	                    manager.incrementNumDeadAlien();
 	                    // 全滅か判断
 	                    if(dieCount == NUM_ALIEN){
 	                    	alienAllClear = true;
@@ -336,11 +344,13 @@ public class MainPanel extends JPanel implements Runnable,
         // プレーヤーとビームの衝突検出
         for (int i = 0; i < NUM_BEAM; i++) {
             if (player.collideWith(beams[i])) {
+            	// プレーヤーとi番目のビームが衝突
                 // 爆発エフェクト生成
                 explosion = new Explosion(player.getPos().x, player.getPos().y);
                 // 爆発音
                 WaveEngine.play(0);
-                // プレーヤーとi番目のビームが衝突
+                // 破壊された数をmanagerクラスに格納（得点を数えるため）
+                manager.incrementNumDestroyedMeteorite();
                 // ビームは保管庫へ
                 beams[i].store();
                 // ゲームオーバー
