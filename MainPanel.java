@@ -31,19 +31,19 @@ public class MainPanel extends JPanel implements Runnable,
     private static final int UP = 2;
     private static final int DOWN = 3;
     // 連続発射できる弾の数
-    private static final int NUM_SHOT = 20;
+    private static final int NUM_SHOT = 50;
     // 発射できる間隔（弾の充填時間）
-    private static final int FIRE_INTERVAL = 150;
+    private static final int FIRE_INTERVAL = 30;
     // エイリアンの数
     private static final int NUM_ALIEN = 50;
     //　ボスの数
     private static final int NUM_BOSS = 1;
     // 隕石の数
-    private static final int NUM_METEORITE = 0;
+    private static final int NUM_METEORITE = 15;
     // ビームの数
     private static final int NUM_BEAM = 0;
     // ステージ数
-    private static final int NUM_STAGE = 5;
+    private static final int NUM_STAGE = 1;
     // 各インスタンスの宣言
     private Player player;
     private Shot[] shots;
@@ -55,7 +55,7 @@ public class MainPanel extends JPanel implements Runnable,
     // 最後に発射した時間
     private long lastFire = 0;
     private int dieCount = 0;
-    private int stage = 1;
+    private int stage = 0;
     // 雑魚敵の全滅確認
     private boolean alienAllClear = false;
     // キーの状態（このキー状態を使ってプレイヤーを移動する）
