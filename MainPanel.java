@@ -22,6 +22,8 @@ import javax.swing.JPanel;
  */
 public class MainPanel extends JPanel implements Runnable, 
 												KeyListener {
+	
+
     // パネルサイズ
     public static final int WIDTH = 600;
     public static final int HEIGHT = 600;
@@ -201,12 +203,14 @@ public class MainPanel extends JPanel implements Runnable,
         // プレイヤーを移動する
         if (leftPressed) {
             player.move(LEFT);
-        } else if (rightPressed) {
+        }
+        if (rightPressed) {
             player.move(RIGHT);
         }
         if (upPressed) {
         	player.move(UP);
-        } else if (downPressed) {
+        }
+        if (downPressed) {
         	player.move(DOWN);
         }
 
@@ -492,4 +496,7 @@ public class MainPanel extends JPanel implements Runnable,
     public static int getWIDTH() {
 		return WIDTH;
 	}
+    public Manager getManager() {
+    	return manager;
+    }
 }

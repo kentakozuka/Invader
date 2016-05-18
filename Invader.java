@@ -19,6 +19,11 @@ public class Invader extends JFrame {
         setResizable(false);
         // メインパネルを作成してフレームに追加
         MainPanel panel = new MainPanel();
+        // 得点ラベル
+        DisplayPointPanel pointDispLabel = new DisplayPointPanel();
+        pointDispLabel.setText(new Integer(panel.getManager().getPoint()).toString());
+        panel.add(pointDispLabel);
+        //
         Container contentPane = this.getContentPane();
         contentPane.add(panel);
         // パネルサイズに合わせてフレームサイズを自動設定
