@@ -2,48 +2,48 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.Random;
 
 import javax.swing.ImageIcon;
 
 
 /**
- * 隕石クラス
+ * エイリアンクラス
  * 
- * @author kozuka
+ * @author koganezaki
  *  
  */
-public class Meteorite {
-    // 隕石の移動範囲
-    private static final int MOVE_WIDTH = 200;
-    // 隕石の墓（画面に表示されない場所）
+public class Boss {
+    // ボスの移動範囲
+    private static final int MOVE_WIDTH = 100;
+    // ボスの墓（画面に表示されない場所）
     private static final Point TOMB = new Point(-50, -50);
     // 移動スピード
     private int speed;
-    // 隕石の位置（x, y座標）
+    // ボスの位置（x座標）
     private int x;
+    // ボスの位置（y座標）
     private int y;
-    // 隕石の幅
+    // ボスの幅
     private int width;
-    // 隕石の高さ
+    // ボスの高さ
     private int height;
-    // 隕石の画像
+    // ボスの画像
     private Image image;
-    // 隕石の移動範囲
+    // ボスの移動範囲
     private int left;
     private int right;
-    // 隕石が生きてるかどうか
+    // ボスが生きてるかどうか
     private boolean isAlive;
     // メインパネルへの参照
     private MainPanel panel;
     // コンストラクタ
-    public Meteorite(int x, int y, int speed, MainPanel panel) {
+    public Boss(int x, int y, int speed, MainPanel panel) {
         this.x = x;
         this.y = y;
         this.speed = speed;
         this.panel = panel;
 
-        // 隕石の初期位置から移動範囲を求める
+        // ボスの初期位置から移動範囲を求める
         left = x;
         right = x + MOVE_WIDTH;
 
@@ -52,37 +52,31 @@ public class Meteorite {
         // イメージをロード
         loadImage();
     }
-
     /**
-     * 隕石を移動する
+     * ボスを移動する
      *  
      */
     public void move() {
-    	// 下に進む
-        y += speed;
+        x += speed;
 
-        // ウィンドウの下まで行ったら上に移動
-        if (this.y > MainPanel.HEIGHT) {
-            this.initMeteorite();
+        // 移動範囲を超えていたら反転移動
+        if (x < left) {
+            speed = -speed;
+        }
+        if (x > right) {
+            speed = -speed;
         }
     }
 
     /**
-     * 隕石の位置の初期化
-     */
-    public void initMeteorite() {
-    	this.x = (new Random()).nextInt(MainPanel.getWIDTH());
-    	this.y = 0;
-    }
-    /**
-     * 隕石と弾の衝突を判定する
+     * ボスと弾の衝突を判定する
      * 
      * @param shot 衝突しているか調べる弾オブジェクト
      * @return 衝突していたらtrueを返す
      */
     public boolean collideWith(Shot shot) {
-        // 隕石の矩形を求める
-        Rectangle rectMeteorite = new Rectangle(x, y, width, height);
+        // ボスの矩形を求める
+        Rectangle rectBoss = new Rectangle(x, y, width, height);
         // 弾の矩形を求める
         Point pos = shot.getPos();
         Rectangle rectShot = new Rectangle(pos.x, pos.y, 
@@ -90,47 +84,48 @@ public class Meteorite {
 
         // 矩形同士が重なっているか調べる
         // 重なっていたら衝突している
-        return rectMeteorite.intersects(rectShot);
+        return rectBoss.intersects(rectShot);
     }
 
     /**
-     * 隕石が死ぬ、墓へ移動
+     * ボスが死ぬ、墓へ移動
      *  
      */
     public void die() {
         setPos(TOMB.x, TOMB.y);
         isAlive = false;
+        
     }
 
     /**
-     * 隕石の幅を返す
+     * ボスの幅を返す
      * 
-     * @param width 隕石の幅
+     * @param width ボスの幅
      */
     public int getWidth() {
-        return this.width;
+        return width;
     }
 
     /**
-     * 隕石の高さを返す
+     * ボスの高さを返す
      * 
-     * @return height 隕石の高さ
+     * @return height ボスの高さ
      */
     public int getHeight() {
-        return this.height;
+        return height;
     }
 
     /**
-     * 隕石の位置を返す
+     * ボスの位置を返す
      * 
-     * @return 隕石の位置座標
+     * @return　ボスの位置座標
      */
     public Point getPos() {
-        return new Point(this.x, this.y);
+        return new Point(x, y);
     }
 
     /**
-     * 隕石の位置を(x,y)にセットする
+     * ボスの位置を(x,y)にセットする
      * 
      * @param x 移動先のx座標
      * @param y 移動先のy座標
@@ -141,7 +136,7 @@ public class Meteorite {
     }
 
     /**
-     * 隕石が生きているか
+     * ボスが生きているか
      * 
      * @return 生きていたらtrueを返す
      */
@@ -150,7 +145,7 @@ public class Meteorite {
     }
 
     /**
-     * 隕石を描画する
+     * ボスを描画する
      * 
      * @param g 描画オブジェクト
      */
@@ -163,10 +158,10 @@ public class Meteorite {
      *  
      */
     private void loadImage() {
-        // 隕石のイメージを読み込む
+        // ボスのイメージを読み込む
         // ImageIconを使うとMediaTrackerを使わなくてすむ
         ImageIcon icon = new ImageIcon(getClass()
-                .getResource("image/meteorite.gif"));
+                .getResource("image/boss.gif"));
         image = icon.getImage();
 
         // 幅と高さをセット
