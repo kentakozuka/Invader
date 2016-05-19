@@ -36,21 +36,21 @@ public class MainPanel extends JPanel implements Runnable,
     private static final int UP = 2;
     private static final int DOWN = 3;
     // 連続発射できる弾の数
-    private static final int NUM_SHOT = 50;
+    private static final int NUM_SHOT = 20;
     // 発射できる間隔（弾の充填時間）
-    private static final int FIRE_INTERVAL = 50;
+    private static final int FIRE_INTERVAL = 150;
     // エイリアンの数
     private static final int NUM_ALIEN = 50;
     //　ボスの数
     private static final int NUM_BOSS = 1;
     // 隕石の数
-    private static final int NUM_METEORITE = 0;
+    private static final int NUM_METEORITE = 20;
     // ビームの数
-    private static final int NUM_BEAM = 0;
+    private static final int NUM_BEAM = 20;
     // ステージ数
     private static final int NUM_STAGE = 1;
     // 各インスタンスの宣言
-    private Manager manager;
+    private Manager manager = null;
     private Player player;
     private Shot[] shots;
     private Alien[] aliens;
@@ -143,13 +143,11 @@ public class MainPanel extends JPanel implements Runnable,
             }
             // 衝突判定
             this.collisionDetection();
-            // 得点カウント
-            manager.countPoint();
             // 音楽再生
             WaveEngine.render();
-            // 再描画
-            pointDispLabel.setText(new Integer(this.manager.getPoint()).toString());
+            // 再描画            
             this.repaint();
+            pointDispLabel.setText(new Integer(this.manager.getPoint()).toString());
             
             
             // 休止
@@ -166,10 +164,17 @@ public class MainPanel extends JPanel implements Runnable,
      */
     private void initGame() {
     	
-    	// Managerの生成
-        manager = new Manager();
-        pointDispLabel = new Label(new Integer(this.manager.getPoint()).toString());
-        this.add(pointDispLabel);
+    	// Managerの生成。初回ならラベルに貼り付け
+       	if(this.manager == null) {
+	        this.manager = new Manager();
+	        this.pointDispLabel = new Label(new Integer(this.manager.getPoint()).toString());
+	        this.add(pointDispLabel);
+	    //以降は以降はフィールドを0に初期化
+    	} else {
+    		this.manager.setPoint(0);
+    		this.manager.setNumDeadAlien(0);
+    		this.manager.setNumDestroyedMeteorite(0);
+    	}
         
         // プレイヤーを作成
         player = new Player(0, HEIGHT - 20, this);
@@ -334,7 +339,7 @@ public class MainPanel extends JPanel implements Runnable,
 	                    explosion = new Explosion(aliens[i].getPos().x, aliens[i].getPos().y);
 	                    // エイリアンは死ぬ
 	                    aliens[i].die();
-	                    //死んだ数をmanagerクラスに格納（得点を数えるため）
+	                    //死んだ数をmanagerクラスに追加
 	                    manager.incrementNumDeadAlien();
 	                    // 全滅か判断
 	                    if(manager.getNumDeadAlien() == NUM_ALIEN){
