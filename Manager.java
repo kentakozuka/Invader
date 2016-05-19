@@ -13,12 +13,20 @@ public class Manager {
 		point = 0;
 	}
 	
+	// pointのゲッター／セッター
+	public int getPoint() {
+		countPoint();
+		return this.point;
+	}
+	public void setPoint(int point) {
+		this.point = point;
+	}
+
+	// 得点の計算
 	public void countPoint() {
 		point = numDeadAlien*10 + numDestroyedMeteorite*2;
 	}
-	public int getPoint() {
-		return point;
-	}
+	
 	public void incrementNumDeadAlien() {
 		this.numDeadAlien++;
 	}
