@@ -25,4 +25,20 @@ public class Manager {
 	public void incrementNumDestroyedMeteorite() {
 		this.numDestroyedMeteorite++;
 	}
+
+	public int getNumDeadAlien() {
+		return numDeadAlien;
+	}
+
+	public void setNumDeadAlien(int numDeadAlien) {
+		this.numDeadAlien = numDeadAlien;
+	}
+
+	public int getNumDestroyedMeteorite() {
+		return numDestroyedMeteorite;
+	}
+
+	public void setNumDestroyedMeteorite(int numDestroyedMeteorite) {
+		this.numDestroyedMeteorite = numDestroyedMeteorite;
+	}
 }

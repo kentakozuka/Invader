@@ -102,6 +102,17 @@ public class Player {
         // 重なっていたら衝突している
         return rectPlayer.intersects(rectMeteorite);
 	}
+    public boolean collideWith(Alien alien) {
+    	// プレイヤーの矩形を求める
+        Rectangle rectPlayer = new Rectangle(this.x, this.y, this.width, this.height);
+        // ビームの矩形を求める
+        Point pos = alien.getPos();
+        Rectangle rectMeteorite = new Rectangle(pos.x, pos.y, alien.getWidth(), alien.getHeight());
+
+        // 矩形同士が重なっているか調べる
+        // 重なっていたら衝突している
+        return rectPlayer.intersects(rectMeteorite);
+	}
     /**
      * プレイヤーを描画する
      * 
@@ -152,8 +163,5 @@ public class Player {
         // 幅と高さをセット
         width = image.getWidth(panel);
         height = image.getHeight(panel);
-    }
-
-	
-    
+    }    
 }

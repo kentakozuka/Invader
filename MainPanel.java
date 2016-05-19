@@ -44,9 +44,9 @@ public class MainPanel extends JPanel implements Runnable,
     //　ボスの数
     private static final int NUM_BOSS = 1;
     // 隕石の数
-    private static final int NUM_METEORITE = 15;
+    private static final int NUM_METEORITE = 0;
     // ビームの数
-    private static final int NUM_BEAM = 20;
+    private static final int NUM_BEAM = 0;
     // ステージ数
     private static final int NUM_STAGE = 1;
     // 各インスタンスの宣言
@@ -60,7 +60,7 @@ public class MainPanel extends JPanel implements Runnable,
     private Explosion explosion;
     // 最後に発射した時間
     private long lastFire = 0;
-    private int dieCount = 0;
+    // 現在のステージ
     private int stage = 0;
     // 雑魚敵の全滅確認
     private boolean alienAllClear = false;
@@ -195,7 +195,7 @@ public class MainPanel extends JPanel implements Runnable,
         // 隕石を作成
         meteorites = new Meteorite[NUM_METEORITE];
         for (int i = 0; i < NUM_METEORITE; i++) {
-        	meteorites[i] = new Meteorite((new Random()).nextInt(this.WIDTH) , -(new Random()).nextInt(this.HEIGHT), 1, this);
+        	meteorites[i] = new Meteorite((new Random()).nextInt(MainPanel.WIDTH) , -(new Random()).nextInt(MainPanel.HEIGHT), 1, this);
         }
         
         // ビームを作成
@@ -334,11 +334,10 @@ public class MainPanel extends JPanel implements Runnable,
 	                    explosion = new Explosion(aliens[i].getPos().x, aliens[i].getPos().y);
 	                    // エイリアンは死ぬ
 	                    aliens[i].die();
-	                    dieCount++;
 	                    //死んだ数をmanagerクラスに格納（得点を数えるため）
 	                    manager.incrementNumDeadAlien();
 	                    // 全滅か判断
-	                    if(dieCount == NUM_ALIEN){
+	                    if(manager.getNumDeadAlien() == NUM_ALIEN){
 	                    	alienAllClear = true;
 	                    }
 	                    // 断末魔
@@ -351,7 +350,19 @@ public class MainPanel extends JPanel implements Runnable,
 	            }
 	        }
     	}
-        
+    	
+    	// プレーヤーとエイリアンの衝突検出
+        for (int i = 0; i < NUM_ALIEN; i++) {
+            if (player.collideWith(aliens[i])) {
+            	// プレーヤーとi番目のビームが衝突
+                // 爆発エフェクト生成
+                explosion = new Explosion(player.getPos().x, player.getPos().y);
+                // 爆発音
+                WaveEngine.play(0);
+                // ゲームオーバー
+                initGame();
+            }
+        }
         
         
         // プレーヤーとビームの衝突検出
