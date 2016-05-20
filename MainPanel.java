@@ -145,7 +145,7 @@ public class MainPanel extends JPanel implements Runnable,
             if(alienAllClear == false){
             	this.alienAttack();
             } else {
-            	//this.bossAttack();
+            	this.bossAttack();
             }
             // 衝突判定
             this.collisionDetection();
@@ -329,20 +329,22 @@ public class MainPanel extends JPanel implements Runnable,
 	   // 未実装
 	   
        for (int i = 0; i < NUM_BOSS_BEAM; i++) {
-           // エイリアンの攻撃
-           // ランダムにエイリアンを選ぶ
-           int n = rand.nextInt(NUM_ALIEN);
-           // そのエイリアンが生きていればビーム発射
-           if (aliens[n].isAlive()) {
+           
+           // そのボスが生きていればビーム発射
+           if (boss[stage].isAlive()) {
                // 発射されていないビームを見つける
                // 1つ見つけたら発射してbreakでループをぬける
-               for (int j = 0; j < NUM_BOSS_BEAM; j++) {
-                   if (beams[j].isInStorage()) {
-                       // ビームが保管庫にあれば発射できる
-                       // ビームの座標をエイリアンの座標にセットすれば発射される
-                       Point pos = aliens[n].getPos();
-                       beams[j].setPos(pos.x + aliens[n].getWidth() / 2, pos.y);
-                       break;
+        	   int numInStorage = 0;
+               for (BossBeam b: bossBeams) {
+                   if (b.isInStorage()) {
+                	   numInStorage++;
+                   }
+                   if(numInStorage == NUM_BOSS_BEAM) {
+                	   for(BossBeam b1: bossBeams) {
+                		   // ボスビームの座標をボスの座標にセットすれば発射される
+                		   Point pos = boss[stage].getPos();
+                           b1.setPos(pos.x + boss[stage].getWidth() / 2, pos.y);
+                	   }
                    }
                }
            }
@@ -353,12 +355,15 @@ public class MainPanel extends JPanel implements Runnable,
      *  
      */
     private void collisionDetection() {
+    	// ボスと弾の衝突検出
     	if(alienAllClear == true){
 		   for (int j = 0; j < NUM_SHOT; j++) {
 	            if (boss[stage].collideWith(shots[j])) {
 	                // i番目のボスとj番目の弾が衝突
 	            	//HPをディクリメント
 	            	boss[stage].decrementHP();
+	            	// 断末魔
+                    WaveEngine.play(1);
 	            	//HPが0になった場合、ボスは死ぬ
 	            	if(boss[stage].getHP() <= 0) {
 	            		// 爆発エフェクト生成

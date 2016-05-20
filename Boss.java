@@ -14,9 +14,7 @@ import javax.swing.ImageIcon;
  */
 public class Boss {
 	// ボスのHP
-	private static int HP = 100;
-    
-
+	private int HP;
 	// ボスの移動範囲
     private static final int MOVE_WIDTH = 200;
     // ボスの墓（画面に表示されない場所）
@@ -46,6 +44,7 @@ public class Boss {
         this.y = y;
         this.speed = speed;
         this.panel = panel;
+        this.HP = 100;
 
         // ボスの初期位置から移動範囲を求める
         left = x;
