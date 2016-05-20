@@ -13,6 +13,8 @@ import javax.swing.ImageIcon;
  *  
  */
 public class Boss {
+	// ボスのHP
+	private static int bossHP = 100;
     // ボスの移動範囲
     private static final int MOVE_WIDTH = 200;
     // ボスの墓（画面に表示されない場所）

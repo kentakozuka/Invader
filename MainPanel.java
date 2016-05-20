@@ -308,8 +308,10 @@ public class MainPanel extends JPanel implements Runnable,
     * ボスの攻撃
     */
    private void bossAttack() {
-       // 1ターンでNUM_BEAMだけ発射する
-       // つまりエイリアン1人になってもそいつがNUM_BEAM発射する
+       // 墓にNUM_BOSS_BEAMが全てあれば攻撃する
+	   // イメージは放射線状に発射
+	   // 未実装
+	   
        for (int i = 0; i < NUM_BEAM; i++) {
            // エイリアンの攻撃
            // ランダムにエイリアンを選ぶ
