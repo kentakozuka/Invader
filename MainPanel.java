@@ -36,9 +36,9 @@ public class MainPanel extends JPanel implements Runnable,
     private static final int UP = 2;
     private static final int DOWN = 3;
     // 連続発射できる弾の数
-    private static final int NUM_SHOT = 20;
+    private static final int NUM_SHOT = 50;
     // 発射できる間隔（弾の充填時間）
-    private static final int FIRE_INTERVAL = 150;
+    private static final int FIRE_INTERVAL = 50;
     // エイリアンの数
     private static final int NUM_ALIEN = 50;
     //　ボスの数
@@ -171,7 +171,6 @@ public class MainPanel extends JPanel implements Runnable,
 	        this.add(pointDispLabel);
 	    //以降は以降はフィールドを0に初期化
     	} else {
-    		this.manager.setPoint(0);
     		this.manager.setNumDeadAlien(0);
     		this.manager.setNumDestroyedMeteorite(0);
     	}
@@ -230,7 +229,7 @@ public class MainPanel extends JPanel implements Runnable,
 
         // エイリアンを移動する
         if(alienAllClear == true){
-        	//boss[stage].move();
+        	boss[stage].move();
         } else  {        	
 	        for (int i = 0; i < NUM_ALIEN; i++) {
 	            aliens[i].move();
@@ -305,6 +304,32 @@ public class MainPanel extends JPanel implements Runnable,
         }
     }
 
+    /*
+    * ボスの攻撃
+    */
+   private void bossAttack() {
+       // 1ターンでNUM_BEAMだけ発射する
+       // つまりエイリアン1人になってもそいつがNUM_BEAM発射する
+       for (int i = 0; i < NUM_BEAM; i++) {
+           // エイリアンの攻撃
+           // ランダムにエイリアンを選ぶ
+           int n = rand.nextInt(NUM_ALIEN);
+           // そのエイリアンが生きていればビーム発射
+           if (aliens[n].isAlive()) {
+               // 発射されていないビームを見つける
+               // 1つ見つけたら発射してbreakでループをぬける
+               for (int j = 0; j < NUM_BEAM; j++) {
+                   if (beams[j].isInStorage()) {
+                       // ビームが保管庫にあれば発射できる
+                       // ビームの座標をエイリアンの座標にセットすれば発射される
+                       Point pos = aliens[n].getPos();
+                       beams[j].setPos(pos.x + aliens[n].getWidth() / 2, pos.y);
+                       break;
+                   }
+               }
+           }
+       }
+   }
     /**
      * 衝突検出
      *  
