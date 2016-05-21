@@ -218,6 +218,11 @@ public class MainPanel extends JPanel implements Runnable,
         for (int i = 0; i < NUM_BEAM; i++) {
             bossBeams[i] = new BossBeam(this);
         }
+        // ボスビームを作成
+        bossBeams = new BossBeam[NUM_BEAM];
+        for (int i = 0; i < NUM_BEAM; i++) {
+            bossBeams[i] = new BossBeam(this);
+        }
     }
     
     /**

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /Alien.class
 /Beam.class
 /DataClip.class
@@ -17,3 +18,24 @@
 /PointDispLabel.class
 /DisplayPointLabel.class
 /BossBeam.class
+=======
+/Alien.class
+/Beam.class
+/DataClip.class
+/Explosion.class
+/Invader.class
+/MainPanel.class
+/MidiEngine$MyMetaEventListener.class
+/MidiEngine.class
+/Player.class
+/Shot.class
+/WaveEngine.class
+/Manager.class
+/Boss.class
+/Meteorite.class
+/Manager.class
+/DisplayPointPanel.class
+/PointDispLabel.class
+/DisplayPointLabel.class
+/BossBeam.class
+>>>>>>> refs/remotes/origin/kenta

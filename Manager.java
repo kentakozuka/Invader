@@ -9,7 +9,10 @@ public class Manager {
 	private int numDestroyedMeteorite;
 	private int point;
 	
+<<<<<<< HEAD
 	
+=======
+>>>>>>> refs/remotes/origin/kenta
 	/**
 	 * コンストラクタ
 	 */
