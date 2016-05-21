@@ -40,7 +40,7 @@ public class MainPanel extends JPanel implements Runnable,
     // 発射できる間隔（弾の充填時間）
     private static final int FIRE_INTERVAL = 50;
     // エイリアンの数
-    private static final int NUM_ALIEN = 5;
+    private static final int NUM_ALIEN = 50;
     //　ボスの数
     private static final int NUM_BOSS = 1;
     // 隕石の数
