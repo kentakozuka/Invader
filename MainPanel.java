@@ -36,18 +36,23 @@ public class MainPanel extends JPanel implements Runnable,
     private static final int UP = 2;
     private static final int DOWN = 3;
     // 連続発射できる弾の数
-    private static final int NUM_SHOT = 20;
+    private static final int NUM_SHOT = 50;
     // 発射できる間隔（弾の充填時間）
-    private static final int FIRE_INTERVAL = 150;
+    private static final int FIRE_INTERVAL = 50;
     // エイリアンの数
-    private static final int NUM_ALIEN = 50;
+    private static final int NUM_ALIEN = 5;
     //　ボスの数
     private static final int NUM_BOSS = 1;
     // 隕石の数
     private static final int NUM_METEORITE = 20;
     // ビームの数
     private static final int NUM_BEAM = 20;
-    // ステージ数
+    // ボスビームの数
+    private static final int NUM_BOSS_BEAM = 20;
+   
+
+
+	// ステージ数
     private static final int NUM_STAGE = 1;
     // 各インスタンスの宣言
     private Manager manager = null;
@@ -57,6 +62,7 @@ public class MainPanel extends JPanel implements Runnable,
     private Boss[] boss;
     private Meteorite[] meteorites;
     private Beam[] beams;
+    private BossBeam[] bossBeams;
     private Explosion explosion;
     // 最後に発射した時間
     private long lastFire = 0;
@@ -139,7 +145,7 @@ public class MainPanel extends JPanel implements Runnable,
             if(alienAllClear == false){
             	this.alienAttack();
             } else {
-            	//this.bossAttack();
+            	this.bossAttack();
             }
             // 衝突判定
             this.collisionDetection();
@@ -171,7 +177,6 @@ public class MainPanel extends JPanel implements Runnable,
 	        this.add(pointDispLabel);
 	    //以降は以降はフィールドを0に初期化
     	} else {
-    		this.manager.setPoint(0);
     		this.manager.setNumDeadAlien(0);
     		this.manager.setNumDestroyedMeteorite(0);
     	}
@@ -200,13 +205,18 @@ public class MainPanel extends JPanel implements Runnable,
         // 隕石を作成
         meteorites = new Meteorite[NUM_METEORITE];
         for (int i = 0; i < NUM_METEORITE; i++) {
-        	meteorites[i] = new Meteorite((new Random()).nextInt(MainPanel.WIDTH) , -(new Random()).nextInt(MainPanel.HEIGHT), 1, this);
+        	meteorites[i] = new Meteorite((new Random()).nextInt(MainPanel.WIDTH) , -(new Random()).nextInt(MainPanel.HEIGHT), 2, this);
         }
         
         // ビームを作成
         beams = new Beam[NUM_BEAM];
         for (int i = 0; i < NUM_BEAM; i++) {
             beams[i] = new Beam(this);
+        }
+        // ボスビームを作成
+        bossBeams = new BossBeam[NUM_BEAM];
+        for (int i = 0; i < NUM_BEAM; i++) {
+            bossBeams[i] = new BossBeam(this);
         }
     }
     
@@ -230,7 +240,7 @@ public class MainPanel extends JPanel implements Runnable,
 
         // エイリアンを移動する
         if(alienAllClear == true){
-        	//boss[stage].move();
+        	boss[stage].move();
         } else  {        	
 	        for (int i = 0; i < NUM_ALIEN; i++) {
 	            aliens[i].move();
@@ -250,6 +260,10 @@ public class MainPanel extends JPanel implements Runnable,
         // ビームを移動する
         for (int i = 0; i < NUM_BEAM; i++) {
             beams[i].move();
+        }
+        // ボスビームを移動する
+        for (int i = 0; i < NUM_BOSS_BEAM; i++) {
+            bossBeams[i].move(i);
         }
     }
 
@@ -305,28 +319,67 @@ public class MainPanel extends JPanel implements Runnable,
         }
     }
 
+    /*
+    * ボスの攻撃
+    * 作成途中
+    */
+   private void bossAttack() {
+       // 墓にNUM_BOSS_BEAMが全てあれば攻撃する
+	   // イメージは放射線状に発射
+	   // 未実装
+	   
+       for (int i = 0; i < NUM_BOSS_BEAM; i++) {
+           
+           // そのボスが生きていればビーム発射
+           if (boss[stage].isAlive()) {
+               // 発射されていないビームを見つける
+               // 1つ見つけたら発射してbreakでループをぬける
+        	   int numInStorage = 0;
+               for (BossBeam b: bossBeams) {
+                   if (b.isInStorage()) {
+                	   numInStorage++;
+                   }
+                   if(numInStorage == NUM_BOSS_BEAM) {
+                	   for(BossBeam b1: bossBeams) {
+                		   // ボスビームの座標をボスの座標にセットすれば発射される
+                		   Point pos = boss[stage].getPos();
+                           b1.setPos(pos.x + boss[stage].getWidth() / 2, pos.y);
+                	   }
+                   }
+               }
+           }
+       }
+   }
     /**
      * 衝突検出
      *  
      */
     private void collisionDetection() {
+    	// ボスと弾の衝突検出
     	if(alienAllClear == true){
 		   for (int j = 0; j < NUM_SHOT; j++) {
 	            if (boss[stage].collideWith(shots[j])) {
 	                // i番目のボスとj番目の弾が衝突
-	                // 爆発エフェクト生成
-	                explosion = new Explosion(boss[stage].getPos().x, boss[stage].getPos().y);
-	                // ボスは死ぬ
-	                boss[stage].die();
-	                //　次のステージへ
-	                alienAllClear = false;
-	                stage ++;
-	                // 断末魔
-	                WaveEngine.play(1);
-	                // 弾は保管庫へ（保管庫へ送らなければ貫通弾になる）
-	                shots[j].store();
-	                // エイリアンが死んだらもうループまわす必要なし
-	                break;
+	            	//HPをディクリメント
+	            	boss[stage].decrementHP();
+	            	// 断末魔
+                    WaveEngine.play(1);
+	            	//HPが0になった場合、ボスは死ぬ
+	            	if(boss[stage].getHP() <= 0) {
+	            		// 爆発エフェクト生成
+		                explosion = new Explosion(boss[stage].getPos().x, boss[stage].getPos().y);
+		                // ボスは死ぬ
+		                boss[stage].die();
+		                //　次のステージへ
+		                alienAllClear = false;
+		                stage ++;
+		                // 断末魔
+		                WaveEngine.play(1);
+		                // 弾は保管庫へ（保管庫へ送らなければ貫通弾になる）
+		                shots[j].store();
+		                // エイリアンが死んだらもうループまわす必要なし
+		                break;
+	            	}	                
 	            }
 	        }
     	} else {
@@ -406,6 +459,10 @@ public class MainPanel extends JPanel implements Runnable,
                     // i番目の隕石とj番目の弾が衝突
                     // 爆発エフェクト生成
                     explosion = new Explosion(meteorites[i].getPos().x, meteorites[i].getPos().y);
+                    // 爆発音
+                    WaveEngine.play(0);
+                    // 破壊された数をmanagerクラスに格納（得点を数えるため）
+                    this.manager.incrementNumDestroyedMeteorite();
                     // 隕石は再生成
                     meteorites[i].initMeteorite();
                     // 弾は保管庫へ（保管庫へ送らなければ貫通弾になる）
@@ -520,5 +577,9 @@ public class MainPanel extends JPanel implements Runnable,
 	
     public static int getWIDTH() {
 		return WIDTH;
+	}
+    
+    public static int getNumBossBeam() {
+		return NUM_BOSS_BEAM;
 	}
 }

@@ -13,8 +13,10 @@ import javax.swing.ImageIcon;
  *  
  */
 public class Boss {
-    // ボスの移動範囲
-    private static final int MOVE_WIDTH = 100;
+	// ボスのHP
+	private int HP;
+	// ボスの移動範囲
+    private static final int MOVE_WIDTH = 200;
     // ボスの墓（画面に表示されない場所）
     private static final Point TOMB = new Point(-50, -50);
     // 移動スピード
@@ -42,6 +44,7 @@ public class Boss {
         this.y = y;
         this.speed = speed;
         this.panel = panel;
+        this.HP = 100;
 
         // ボスの初期位置から移動範囲を求める
         left = x;
@@ -51,6 +54,12 @@ public class Boss {
 
         // イメージをロード
         loadImage();
+    }
+    /**
+     * HPディクリメントメソッド
+     */
+    public void decrementHP() {
+    	this.HP--;
     }
     /**
      * ボスを移動する
@@ -168,4 +177,7 @@ public class Boss {
         width = image.getWidth(panel);
         height = image.getHeight(panel);
     }
+    public int getHP() {
+		return HP;
+	}
 }
