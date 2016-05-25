@@ -107,11 +107,22 @@ public class Player {
         Rectangle rectPlayer = new Rectangle(this.x, this.y, this.width, this.height);
         // ビームの矩形を求める
         Point pos = alien.getPos();
-        Rectangle rectMeteorite = new Rectangle(pos.x, pos.y, alien.getWidth(), alien.getHeight());
+        Rectangle rectAlien = new Rectangle(pos.x, pos.y, alien.getWidth(), alien.getHeight());
 
         // 矩形同士が重なっているか調べる
         // 重なっていたら衝突している
-        return rectPlayer.intersects(rectMeteorite);
+        return rectPlayer.intersects(rectAlien);
+	}
+    public boolean collideWith(Boss boss) {
+    	// プレイヤーの矩形を求める
+        Rectangle rectPlayer = new Rectangle(this.x, this.y, this.width, this.height);
+        // ビームの矩形を求める
+        Point pos = boss.getPos();
+        Rectangle rectBoss = new Rectangle(pos.x, pos.y, boss.getWidth(), boss.getHeight());
+
+        // 矩形同士が重なっているか調べる
+        // 重なっていたら衝突している
+        return rectPlayer.intersects(rectBoss);
 	}
     /**
      * プレイヤーを描画する

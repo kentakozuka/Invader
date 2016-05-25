@@ -51,7 +51,7 @@ public class BossBeam {
             return;
         
         double degree = 90 / MainPanel.getNumBossBeam() * i;
-        double radian = degree * Math.PI / 180;
+        double radian = -(degree * Math.PI / 180);
         this.x += (int) Math.sin(radian) * this.SPEED;
         this.y += (int) Math.cos(radian) * this.SPEED;
         

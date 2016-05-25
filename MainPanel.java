@@ -44,7 +44,7 @@ public class MainPanel extends JPanel implements Runnable,
     //　ボスの数
     private static final int NUM_BOSS = 1;
     // 隕石の数
-    private static final int NUM_METEORITE = 20;
+    private static final int NUM_METEORITE = 10;
     // ビームの数
     private static final int NUM_BEAM = 20;
     // ボスビームの数
@@ -369,10 +369,12 @@ public class MainPanel extends JPanel implements Runnable,
 	            	boss[stage].decrementHP();
 	            	// 断末魔
                     WaveEngine.play(1);
+                    // 爆発エフェクト生成
+                    explosion = new Explosion(boss[stage].getPos().x, boss[stage].getPos().y);
 	            	//HPが0になった場合、ボスは死ぬ
 	            	if(boss[stage].getHP() <= 0) {
 	            		// 爆発エフェクト生成
-		                explosion = new Explosion(boss[stage].getPos().x, boss[stage].getPos().y);
+		                explosion = new Explosion(shots[j].getPos().x, shots[j].getPos().y);
 		                // ボスは死ぬ
 		                boss[stage].die();
 		                //　次のステージへ
@@ -386,6 +388,15 @@ public class MainPanel extends JPanel implements Runnable,
 		                break;
 	            	}	                
 	            }
+	        }
+		   	// プレーヤーとボスの衝突検出
+	        if (player.collideWith(boss[this.stage])) {
+	            // 爆発エフェクト生成
+	            explosion = new Explosion(player.getPos().x, player.getPos().y);
+	            // 爆発音
+	            WaveEngine.play(0);
+	            // ゲームオーバー
+	            initGame();
 	        }
     	} else {
 	        // エイリアンと弾の衝突検出
@@ -436,8 +447,6 @@ public class MainPanel extends JPanel implements Runnable,
                 explosion = new Explosion(player.getPos().x, player.getPos().y);
                 // 爆発音
                 WaveEngine.play(0);
-                // 破壊された数をmanagerクラスに格納（得点を数えるため）
-                manager.incrementNumDestroyedMeteorite();
                 // ビームは保管庫へ
                 beams[i].store();
                 // ゲームオーバー
