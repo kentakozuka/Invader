@@ -8,7 +8,6 @@ public class Manager {
 	private int numDeadAlien;
 	private int numDestroyedMeteorite;
 	private int point;
-
 	
 	/**
 	 * コンストラクタ
