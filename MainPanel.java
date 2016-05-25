@@ -242,7 +242,6 @@ public class MainPanel extends JPanel implements Runnable,
         if (downPressed) {
         	player.move(DOWN);
         }
-
         // エイリアンを移動する
         if(alienAllClear == true){
         	boss[stage].move();
@@ -251,17 +250,14 @@ public class MainPanel extends JPanel implements Runnable,
 	            aliens[i].move();
 	        }
         }
- 
         // 隕石を移動する
         for (int i = 0; i < NUM_METEORITE; i++) {
             meteorites[i].move();
         }
-
         // 弾を移動する
         for (int i = 0; i < NUM_SHOT; i++) {
             shots[i].move();
         }
-
         // ビームを移動する
         for (int i = 0; i < NUM_BEAM; i++) {
             beams[i].move();
