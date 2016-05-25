@@ -124,6 +124,17 @@ public class Player {
         // 重なっていたら衝突している
         return rectPlayer.intersects(rectBoss);
 	}
+    public boolean collideWith(BossBeam bossBeam) {
+    	// プレイヤーの矩形を求める
+        Rectangle rectPlayer = new Rectangle(this.x, this.y, this.width, this.height);
+        // ビームの矩形を求める
+        Point pos = bossBeam.getPos();
+        Rectangle rectBossBeam = new Rectangle(pos.x, pos.y, bossBeam.getWidth(), bossBeam.getHeight());
+
+        // 矩形同士が重なっているか調べる
+        // 重なっていたら衝突している
+        return rectPlayer.intersects(rectBossBeam);
+	}
     /**
      * プレイヤーを描画する
      * 

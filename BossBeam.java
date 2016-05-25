@@ -17,7 +17,7 @@ import javax.swing.ImageIcon;
  */
 public class BossBeam {
     // ビームのスピード
-    private static final int SPEED = 5;
+    private static final int SPEED = 10;
     // ビームの保管座標（画面に表示されない場所）
     private static final Point STORAGE = new Point(-20, -20);
     // ビームの位置（x座標）
@@ -47,18 +47,16 @@ public class BossBeam {
      */
     public void move(int i) {
         // 保管庫に入っているなら何もしない
-        if (isInStorage())
+        if (this.isInStorage()) {
             return;
-        
-        double degree = 90 / MainPanel.getNumBossBeam() * i;
-        double radian = -(degree * Math.PI / 180);
-        this.x += (int) Math.sin(radian) * this.SPEED;
-        this.y += (int) Math.cos(radian) * this.SPEED;
-        
-        
-        // 画面外のビームは保管庫行き
-        if (y > MainPanel.HEIGHT || x < 0 || x > MainPanel.WIDTH) {
-            store();
+         // 画面外のビームは保管庫行き
+        } else if (y > MainPanel.HEIGHT || y < 0 || x < 0 || x > MainPanel.WIDTH) {
+        	this.store();
+        // 画面内なら移動
+        } else {
+	        double degree = (double) Math.PI/4 + (double) ((double) Math.PI/2 / MainPanel.getNumBossBeam()) * (i + 1);
+	        this.x += this.SPEED * (double) Math.cos(degree);
+	        this.y += this.SPEED * (double) Math.sin(degree);
         }
     }
 
@@ -114,8 +112,9 @@ public class BossBeam {
      * @return 入っているならtrueを返す
      */
     public boolean isInStorage() {
-        if (x == STORAGE.x && y == STORAGE.x)
+        if (x == STORAGE.x && y == STORAGE.x) {
             return true;
+        }
         return false;
     }
 
