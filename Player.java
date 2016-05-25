@@ -179,7 +179,7 @@ public class Player {
         // プレイヤーのイメージを読み込む
         // ImageIconを使うとMediaTrackerを使わなくてすむ
         ImageIcon icon = new ImageIcon(getClass().getResource(
-                "image/player.gif"));
+                "image/newplayer.gif"));
         image = icon.getImage();
 
         // 幅と高さをセット
