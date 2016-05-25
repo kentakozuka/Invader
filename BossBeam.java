@@ -17,7 +17,7 @@ import javax.swing.ImageIcon;
  */
 public class BossBeam {
     // ビームのスピード
-    private static final int SPEED = 10;
+    private static final int SPEED = 7;
     // ビームの保管座標（画面に表示されない場所）
     private static final Point STORAGE = new Point(-20, -20);
     // ビームの位置（x座標）
@@ -54,9 +54,9 @@ public class BossBeam {
         	this.store();
         // 画面内なら移動
         } else {
-	        double degree = (double) Math.PI/4 + (double) ((double) Math.PI/2 / MainPanel.getNumBossBeam()) * (i + 1);
-	        this.x += this.SPEED * (double) Math.cos(degree);
-	        this.y += this.SPEED * (double) Math.sin(degree);
+	        double degree = (double) Math.PI/4 + (double) ((double) Math.PI/2 / (MainPanel.getNumBossBeam() - 1)) * i;
+	        this.x += BossBeam.SPEED * (double) Math.cos(degree);
+	        this.y += BossBeam.SPEED * (double) Math.sin(degree);
         }
     }
 
