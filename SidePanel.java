@@ -30,13 +30,33 @@ public class SidePanel extends JPanel {
     public static final int WIDTH = 200;
     public static final int HEIGHT = 600;
     
+    Manager manager;
+    
     
     public SidePanel() {
         // パネルの推奨サイズを設定、pack()するときに必要
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         // パネルがキー入力を受け付けるようにする
         setFocusable(true);
+        // マネージャー
+        
     }
+    public void run() {
+        while (true) {
+        	
+            //得点ラベルセット
+            pointDispLabel.setText(new Integer(this.manager.getPoint()).toString());
+            
+            
+            // 休止
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
 
 
 }

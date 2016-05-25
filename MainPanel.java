@@ -153,7 +153,7 @@ public class MainPanel extends JPanel implements Runnable,
             WaveEngine.render();
             // 再描画            
             this.repaint();
-            pointDispLabel.setText(new Integer(this.manager.getPoint()).toString());
+            
             
             
             // 休止
