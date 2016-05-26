@@ -64,7 +64,7 @@ public class SidePanel extends JPanel implements Runnable{
         while (true) {
         	
             //得点ラベルセット
-            this.pointDispLabel.setText(new Integer(this.manager.getPoint()).toString());
+            this.pointDispLabel.setText("SCORE: " + new Integer(this.manager.getPoint()).toString());
             
             // 休止
             try {
