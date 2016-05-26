@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Label;
 import java.awt.Point;
@@ -53,6 +54,7 @@ public class SidePanel extends JPanel implements Runnable{
         // ラベルの生成と追加
         this.pointDispLabel = new Label(new Integer(this.manager.getPoint()).toString());
         this.pointDispLabel.setBackground(Color.white);
+        this.pointDispLabel.setFont(new Font("Impact", Font.BOLD, 30 ) );
         this.add(pointDispLabel);
         // ゲームループ開始
         this.gameLoop = new Thread(this);
