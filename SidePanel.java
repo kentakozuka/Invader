@@ -93,8 +93,8 @@ public class SidePanel extends JPanel implements Runnable{
         while (true) {
         	
             // ラベルに文字列をセット
-            this.pointLabel.setText("SCORE: " + new Integer(this.manager.getPoint()).toString());
-            this.lifeLabel.setText("YOUR LIFE: " + new Integer(this.manager.getLife()).toString());
+            this.pointLabel.setText("SCORE : " + new Integer(this.manager.getPoint()).toString());
+            this.lifeLabel.setText("YOUR LIFE : " + new Integer(this.manager.getLife()).toString());
             this.lifeLabel.setText("STAGE : " + new Integer(this.manager.getStage()).toString());
             
             // 休止
