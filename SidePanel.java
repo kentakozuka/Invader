@@ -55,23 +55,25 @@ public class SidePanel extends JPanel implements Runnable{
         setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         // パネルがキー入力を受け付けるようにする
         setFocusable(true);
+        
         // 得点ラベルの生成と設定
-        this.pointDispLabel = new JLabel();
+        this.pointDispLabel = new JLabel("SCORE: " + new Integer(this.manager.getPoint()).toString());
         this.pointDispLabel.setPreferredSize(new Dimension(LABEL_WIDTH, LABEL_HEIGHT));
         this.pointDispLabel.setHorizontalAlignment(JLabel.CENTER);
         this.pointDispLabel.setVerticalAlignment(JLabel.TOP);
-        this.pointDispLabel.setBackground(Color.gray);
+        this.pointDispLabel.setBackground(Color.white);
         this.pointDispLabel.setFont(new Font("Impact", Font.BOLD, 30 ) );
         // ライフラベルの生成と設定
-        this.lifeDispLabel = new JLabel();
+        this.lifeDispLabel = new JLabel("YOUR LIFE: " + new Integer(this.manager.getLife()).toString());
         this.pointDispLabel.setPreferredSize(new Dimension(LABEL_WIDTH, LABEL_HEIGHT));
         this.pointDispLabel.setHorizontalAlignment(JLabel.CENTER);
         this.pointDispLabel.setVerticalAlignment(JLabel.CENTER);
-        this.pointDispLabel.setBackground(Color.gray);
+        this.pointDispLabel.setBackground(Color.white);
         this.pointDispLabel.setFont(new Font("Impact", Font.BOLD, 30 ) );
         // ラベルの追加
         this.add(this.pointDispLabel);
         this.add(this.lifeDispLabel);
+        
         // ゲームループ開始
         this.gameLoop = new Thread(this);
         this.gameLoop.start();
