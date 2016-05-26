@@ -30,7 +30,8 @@ public class SidePanel extends JPanel implements Runnable{
 	
 
 	// 得点ラベル
-	Label pointDispLabel; 
+	Label pointDispLabel;
+	Label lifeDispLabel;
     // パネルサイズ
     public static final int WIDTH = 200;
     public static final int HEIGHT = 600;
@@ -38,7 +39,6 @@ public class SidePanel extends JPanel implements Runnable{
     Manager manager;
     //ゲームループ
     Thread gameLoop;
-    
     
     /**
      * コンストラクタ
@@ -51,11 +51,17 @@ public class SidePanel extends JPanel implements Runnable{
         setFocusable(true);
         // マネージャーを受け取る
         this.manager = manager;
-        // ラベルの生成と追加
-        this.pointDispLabel = new Label(new Integer(this.manager.getPoint()).toString());
-        this.pointDispLabel.setBackground(Color.white);
+        // 得点ラベルの生成と設定
+        this.pointDispLabel = new Label();
+        this.pointDispLabel.setBackground(Color.gray);
         this.pointDispLabel.setFont(new Font("Impact", Font.BOLD, 30 ) );
-        this.add(pointDispLabel);
+        // ライフラベルの生成と設定
+        this.lifeDispLabel = new Label();
+        this.pointDispLabel.setBackground(Color.gray);
+        this.pointDispLabel.setFont(new Font("Impact", Font.BOLD, 30 ) );
+        // ラベルの追加
+        this.add(this.pointDispLabel);
+        this.add(this.lifeDispLabel);
         // ゲームループ開始
         this.gameLoop = new Thread(this);
         this.gameLoop.start();
@@ -65,6 +71,7 @@ public class SidePanel extends JPanel implements Runnable{
         	
             //得点ラベルセット
             this.pointDispLabel.setText("SCORE: " + new Integer(this.manager.getPoint()).toString());
+            this.lifeDispLabel.setText("YOUR LIFE: " + new Integer(this.manager.getLife()).toString());
             
             // 休止
             try {

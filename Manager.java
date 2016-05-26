@@ -8,7 +8,10 @@ public class Manager {
 	private int numDeadAlien;
 	private int numDestroyedMeteorite;
 	private int point;
+	private int life;
 	
+	
+
 	/**
 	 * コンストラクタ
 	 */
@@ -16,6 +19,7 @@ public class Manager {
 		numDeadAlien = 0;
 		numDestroyedMeteorite = 0;
 		point = 0;
+		this.life = 5;
 	}
 	
 	/**
@@ -77,5 +81,20 @@ public class Manager {
 	 */
 	public void setNumDestroyedMeteorite(int numDestroyedMeteorite) {
 		this.numDestroyedMeteorite = numDestroyedMeteorite;
+	}
+	/**
+	 * ライフのゲッター
+	 * @return
+	 */
+	public int getLife() {
+		return life;
+	}
+
+	/**
+	 * ライフのセッター
+	 * @param life
+	 */
+	public void setLife(int life) {
+		this.life = life;
 	}
 }
