@@ -13,6 +13,7 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
@@ -30,11 +31,14 @@ public class SidePanel extends JPanel implements Runnable{
 	
 
 	// 得点ラベル
-	Label pointDispLabel;
-	Label lifeDispLabel;
+	JLabel pointDispLabel;
+	JLabel lifeDispLabel;
     // パネルサイズ
-    public static final int WIDTH = 200;
-    public static final int HEIGHT = 600;
+    public static final int PANEL_WIDTH = 200;
+    public static final int PANEL_HEIGHT = 600;
+    // ラベルサイズ
+    public static final int LABEL_WIDTH = 190;
+    public static final int LABEL_HEIGHT = 80;
     //マネージャ
     Manager manager;
     //ゲームループ
@@ -45,18 +49,24 @@ public class SidePanel extends JPanel implements Runnable{
      * @param manager
      */
     public SidePanel(Manager manager) {
+    	// マネージャーを受け取る
+        this.manager = manager;
         // パネルの推奨サイズを設定、pack()するときに必要
-        setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         // パネルがキー入力を受け付けるようにする
         setFocusable(true);
-        // マネージャーを受け取る
-        this.manager = manager;
         // 得点ラベルの生成と設定
-        this.pointDispLabel = new Label();
+        this.pointDispLabel = new JLabel();
+        this.pointDispLabel.setPreferredSize(new Dimension(LABEL_WIDTH, LABEL_HEIGHT));
+        this.pointDispLabel.setHorizontalAlignment(JLabel.CENTER);
+        this.pointDispLabel.setVerticalAlignment(JLabel.TOP);
         this.pointDispLabel.setBackground(Color.gray);
         this.pointDispLabel.setFont(new Font("Impact", Font.BOLD, 30 ) );
         // ライフラベルの生成と設定
-        this.lifeDispLabel = new Label();
+        this.lifeDispLabel = new JLabel();
+        this.pointDispLabel.setPreferredSize(new Dimension(LABEL_WIDTH, LABEL_HEIGHT));
+        this.pointDispLabel.setHorizontalAlignment(JLabel.CENTER);
+        this.pointDispLabel.setVerticalAlignment(JLabel.CENTER);
         this.pointDispLabel.setBackground(Color.gray);
         this.pointDispLabel.setFont(new Font("Impact", Font.BOLD, 30 ) );
         // ラベルの追加
