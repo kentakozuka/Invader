@@ -38,7 +38,7 @@ public class SidePanel extends JPanel implements Runnable{
     public static final int PANEL_BORDER = 40;
     // ラベルサイズ
     public static final int LABEL_WIDTH = 150;
-    public static final int LABEL_HEIGHT = 80;
+    public static final int LABEL_HEIGHT = 40;
     //マネージャ
     Manager manager;
     //ゲームループ
@@ -95,7 +95,7 @@ public class SidePanel extends JPanel implements Runnable{
             // ラベルに文字列をセット
             this.pointLabel.setText("SCORE : " + new Integer(this.manager.getPoint()).toString());
             this.lifeLabel.setText("YOUR LIFE : " + new Integer(this.manager.getLife()).toString());
-            this.lifeLabel.setText("STAGE : " + new Integer(this.manager.getStage()).toString());
+            this.stageLabel.setText("STAGE : " + new Integer(this.manager.getStage()).toString());
             
             // 休止
             try {
