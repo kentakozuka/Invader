@@ -10,16 +10,16 @@ public class Manager {
     // ステージ数
     public static final int NUM_STAGE = 1;
     
+    
 	
     //変数の宣言
+    private long initTime;
 	private int numDeadAlien;
 	private int numDestroyedMeteorite;
 	private int life;
 	// 現在のステージ
     private int stage = 0;
 	
-	
-
 	
 	/**
 	 * コンストラクタ
@@ -28,6 +28,7 @@ public class Manager {
 		this.initSetting();
 	}
 	public void initSetting() {
+		this.setInitTime(System.currentTimeMillis());
 		this.setLife(Manager.LIFE);
 		this.setNumDeadAlien(0);
 		this.setNumDestroyedMeteorite(0);
@@ -112,5 +113,14 @@ public class Manager {
 	 */
 	public int getStage() {
 		return stage;
+	}
+	public void setInitTime(long initTime) {
+		this.initTime = initTime;
+	}
+	public long getInitTime() {
+		return this.initTime;
+	}
+	public float getElapsedTime() {
+		return (float) (System.currentTimeMillis() - this.getInitTime()) / 1000;
 	}
 }

@@ -32,6 +32,7 @@ public class SidePanel extends JPanel implements Runnable{
 	JLabel pointLabel;
 	JLabel lifeLabel;
 	JLabel stageLabel;
+	JLabel timeLabel;
     // パネルサイズ
     public static final int PANEL_WIDTH = 200;
     public static final int PANEL_HEIGHT = 600;
@@ -80,7 +81,15 @@ public class SidePanel extends JPanel implements Runnable{
         this.stageLabel.setVerticalAlignment(JLabel.BOTTOM);
         this.stageLabel.setForeground(new Color(255, 255, 255));
         this.stageLabel.setFont(new Font("Impact", Font.PLAIN, 30 ));
+        // ステージラベルの生成と設定
+        this.timeLabel = new JLabel();
+        this.timeLabel.setPreferredSize(new Dimension(LABEL_WIDTH, LABEL_HEIGHT));
+        this.timeLabel.setHorizontalAlignment(JLabel.LEFT);
+        this.timeLabel.setVerticalAlignment(JLabel.TOP);
+        this.timeLabel.setForeground(new Color(255, 255, 255));
+        this.timeLabel.setFont(new Font("Impact", Font.PLAIN, 30 ));
         // ラベルの追加
+        this.add(this.timeLabel);
         this.add(this.pointLabel);
         this.add(this.lifeLabel);
         this.add(this.stageLabel);
@@ -96,6 +105,7 @@ public class SidePanel extends JPanel implements Runnable{
             this.pointLabel.setText("SCORE : " + new Integer(this.manager.getPoint()).toString());
             this.lifeLabel.setText("YOUR LIFE : " + new Integer(this.manager.getLife()).toString());
             this.stageLabel.setText("STAGE : " + new Integer(this.manager.getStage()).toString());
+            this.timeLabel.setText("TIME : " + new Float(this.manager.getElapsedTime()).toString().substring(0, 5));
             
             // 休止
             try {
