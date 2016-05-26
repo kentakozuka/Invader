@@ -65,21 +65,21 @@ public class SidePanel extends JPanel implements Runnable{
         this.pointLabel.setHorizontalAlignment(JLabel.LEFT);
         this.pointLabel.setVerticalAlignment(JLabel.TOP);
         this.pointLabel.setForeground(new Color(255, 255, 255));
-        this.pointLabel.setFont(new Font("Impact", Font.PLAIN, 30 ) );
+        this.pointLabel.setFont(new Font("Impact", Font.PLAIN, 30 ));
         // ライフラベルの生成と設定
         this.lifeLabel = new JLabel();
         this.lifeLabel.setPreferredSize(new Dimension(LABEL_WIDTH, LABEL_HEIGHT));
         this.lifeLabel.setHorizontalAlignment(JLabel.LEFT);
         this.lifeLabel.setVerticalAlignment(JLabel.CENTER);
         this.lifeLabel.setForeground(new Color(255, 255, 255));
-        this.lifeLabel.setFont(new Font("Impact", Font.PLAIN, 30 ) );
+        this.lifeLabel.setFont(new Font("Impact", Font.PLAIN, 30 ));
         // ステージラベルの生成と設定
         this.stageLabel = new JLabel();
         this.stageLabel.setPreferredSize(new Dimension(LABEL_WIDTH, LABEL_HEIGHT));
         this.stageLabel.setHorizontalAlignment(JLabel.LEFT);
-        this.stageLabel.setVerticalAlignment(JLabel.CENTER);
+        this.stageLabel.setVerticalAlignment(JLabel.BOTTOM);
         this.stageLabel.setForeground(new Color(255, 255, 255));
-        this.stageLabel.setFont(new Font("Impact", Font.PLAIN, 30 ) );
+        this.stageLabel.setFont(new Font("Impact", Font.PLAIN, 30 ));
         // ラベルの追加
         this.add(this.pointLabel);
         this.add(this.lifeLabel);
@@ -95,7 +95,7 @@ public class SidePanel extends JPanel implements Runnable{
             // ラベルに文字列をセット
             this.pointLabel.setText("SCORE: " + new Integer(this.manager.getPoint()).toString());
             this.lifeLabel.setText("YOUR LIFE: " + new Integer(this.manager.getLife()).toString());
-            this.lifeLabel.setText("YOUR LIFE: " + new Integer(this.manager.getStage()).toString());
+            this.lifeLabel.setText("STAGE : " + new Integer(this.manager.getStage()).toString());
             
             // 休止
             try {

@@ -14,7 +14,6 @@ public class Manager {
     //変数の宣言
 	private int numDeadAlien;
 	private int numDestroyedMeteorite;
-	private int point;
 	private int life;
 	// 現在のステージ
     private int stage = 0;
@@ -26,10 +25,7 @@ public class Manager {
 	 * コンストラクタ
 	 */
 	public Manager(){
-		numDeadAlien = 0;
-		numDestroyedMeteorite = 0;
-		point = 0;
-		this.setLife(Manager.LIFE);
+		this.initSetting();
 	}
 	public void initSetting() {
 		this.setLife(Manager.LIFE);
