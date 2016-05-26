@@ -133,7 +133,7 @@ public class BossBeam {
      *  
      */
     private void loadImage() {
-        ImageIcon icon = new ImageIcon(getClass().getResource("image/beam.gif"));
+        ImageIcon icon = new ImageIcon(getClass().getResource("image/bossbeam.gif"));
         image = icon.getImage();
 
         // 幅と高さをセット
