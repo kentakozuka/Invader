@@ -40,7 +40,7 @@ public class MainPanel extends JPanel implements Runnable,
     // 発射できる間隔（弾の充填時間）
     private static final int FIRE_INTERVAL = 50;
     // エイリアンの数
-    private static final int NUM_ALIEN = 5;
+    private static final int NUM_ALIEN = 20;
     //　ボスの数
     private static final int NUM_BOSS = 1;
     // 隕石の数
@@ -51,8 +51,7 @@ public class MainPanel extends JPanel implements Runnable,
     private static final int NUM_BOSS_BEAM = 20;
    
 
-	// ステージ数
-    private static final int NUM_STAGE = 1;
+	
     // 各インスタンスの宣言
     private Manager manager;
     private Player player;
@@ -65,8 +64,6 @@ public class MainPanel extends JPanel implements Runnable,
     private Explosion explosion;
     // 最後に発射した時間
     private long lastFire = 0;
-    // 現在のステージ
-    private int stage = 0;
     // 雑魚敵の全滅確認
     private boolean alienAllClear = false;
     // キーの状態（このキー状態を使ってプレイヤーを移動する）
@@ -133,7 +130,7 @@ public class MainPanel extends JPanel implements Runnable,
      * Runnableインターフェースの抽象メソッドrun()のオーバーライド
      */
     public void run() {
-        while (stage <= NUM_STAGE) {
+        while (this.manager.getStage() <= Manager.NUM_STAGE) {
         	// 移動
             this.move();
             // 発射ボタンが押されたら弾を発射
@@ -167,8 +164,7 @@ public class MainPanel extends JPanel implements Runnable,
      */
     private void initGame() {
     	
-    	this.manager.setNumDeadAlien(0);
-    	this.manager.setNumDestroyedMeteorite(0);
+    	this.manager.initSetting();
         
         // プレイヤーを作成
         player = new Player(0, HEIGHT - 20, this);
@@ -207,11 +203,6 @@ public class MainPanel extends JPanel implements Runnable,
         for (int i = 0; i < NUM_BEAM; i++) {
             bossBeams[i] = new BossBeam(this);
         }
-        // ボスビームを作成
-        bossBeams = new BossBeam[NUM_BEAM];
-        for (int i = 0; i < NUM_BEAM; i++) {
-            bossBeams[i] = new BossBeam(this);
-        }
     }
     
     /**
@@ -233,7 +224,7 @@ public class MainPanel extends JPanel implements Runnable,
         }
         // エイリアンを移動する
         if(alienAllClear == true){
-        	boss[stage].move();
+        	boss[this.manager.getStage()].move();
         } else  {        	
 	        for (int i = 0; i < NUM_ALIEN; i++) {
 	            aliens[i].move();
@@ -319,7 +310,7 @@ public class MainPanel extends JPanel implements Runnable,
 	   
        for (int i = 0; i < NUM_BOSS_BEAM; i++) {
            // そのボスが生きていればボスビーム発射
-           if (boss[stage].isAlive()) {
+           if (boss[this.manager.getStage()].isAlive()) {
         	   
                // 保管庫に入っているボスビームの数を数える
         	   int j;
@@ -331,8 +322,8 @@ public class MainPanel extends JPanel implements Runnable,
         	   if(j == NUM_BOSS_BEAM) {
         		   for (BossBeam b: bossBeams) {
             		   // ボスビームの座標をボスの座標にセットすれば発射される
-            		   Point pos = boss[stage].getPos();
-                       b.setPos(pos.x + boss[stage].getWidth() / 2, pos.y);
+            		   Point pos = boss[this.manager.getStage()].getPos();
+                       b.setPos(pos.x + boss[this.manager.getStage()].getWidth() / 2, pos.y);
                    }
                }
 		   }               
@@ -346,20 +337,21 @@ public class MainPanel extends JPanel implements Runnable,
     	// ボスと弾の衝突検出
     	if(alienAllClear == true){
 		   for (int j = 0; j < NUM_SHOT; j++) {
-	            if (boss[stage].collideWith(shots[j])) {
+	            if (boss[this.manager.getStage()].collideWith(shots[j])) {
 	                // i番目のボスとj番目の弾が衝突
 	            	//HPをディクリメント
-	            	boss[stage].decrementHP();
+	            	boss[this.manager.getStage()].decrementHP();
 	            	// 断末魔
                     WaveEngine.play(1);
                     // 爆発エフェクト生成
-                    explosion = new Explosion(boss[stage].getPos().x, boss[stage].getPos().y);
+                    explosion = new Explosion(boss[this.manager.getStage()].getPos().x,
+                    							boss[this.manager.getStage()].getPos().y);
 	            	//HPが0になった場合、ボスは死ぬ
-	            	if(boss[stage].getHP() <= 0) {
+	            	if(boss[this.manager.getStage()].getHP() <= 0) {
 	            		// 爆発エフェクト生成
 		                explosion = new Explosion(shots[j].getPos().x, shots[j].getPos().y);
 		                // ボスは死ぬ
-		                boss[stage].die();
+		                boss[this.manager.getStage()].die();
 		                //　次のステージへ
 		                alienAllClear = false;
 		                //stage ++;
@@ -373,13 +365,17 @@ public class MainPanel extends JPanel implements Runnable,
 	            }
 	        }
 		   	// プレーヤーとボスの衝突検出
-	        if (player.collideWith(boss[stage])) {
+	        if (player.collideWith(boss[this.manager.getStage()])) {
 	            // 爆発エフェクト生成
 	            explosion = new Explosion(player.getPos().x, player.getPos().y);
 	            // 爆発音
 	            WaveEngine.play(0);
-	            // ゲームオーバー
-	            initGame();
+	            // ライフを減らす
+	            this.manager.decrementLife();
+	            // ライフが無くなったらゲームオーバー
+	            if(this.manager.getLife() <= 0) {
+	            	initGame();
+	            }
 	        }
     	} else {
 	        // エイリアンと弾の衝突検出
@@ -416,8 +412,12 @@ public class MainPanel extends JPanel implements Runnable,
                 explosion = new Explosion(player.getPos().x, player.getPos().y);
                 // 爆発音
                 WaveEngine.play(0);
-                // ゲームオーバー
-                initGame();
+                // ライフを減らす
+	            this.manager.decrementLife();
+	            // ライフが無くなったらゲームオーバー
+	            if(this.manager.getLife() <= 0) {
+	            	initGame();
+	            }
             }
         }
         
@@ -432,8 +432,12 @@ public class MainPanel extends JPanel implements Runnable,
                 WaveEngine.play(0);
                 // ビームは保管庫へ
                 beams[i].store();
-                // ゲームオーバー
-                initGame();
+                // ライフを減らす
+	            this.manager.decrementLife();
+	            // ライフが無くなったらゲームオーバー
+	            if(this.manager.getLife() <= 0) {
+	            	initGame();
+	            }
             }
         }
         // プレーヤーとボスビームの衝突検出
@@ -446,8 +450,12 @@ public class MainPanel extends JPanel implements Runnable,
                 WaveEngine.play(0);
                 // ビームは保管庫へ
                 bossBeams[i].store();
-                // ゲームオーバー
-                initGame();
+                // ライフを減らす
+	            this.manager.decrementLife();
+	            // ライフが無くなったらゲームオーバー
+	            if(this.manager.getLife() <= 0) {
+	            	initGame();
+	            }
             }
         }
         
@@ -458,8 +466,12 @@ public class MainPanel extends JPanel implements Runnable,
                 explosion = new Explosion(player.getPos().x, player.getPos().y);
                 // 爆発音
                 WaveEngine.play(0);
-                // ゲームオーバー、ゲームを初期化
-                initGame();
+                // ライフを減らす
+	            this.manager.decrementLife();
+	            // ライフが無くなったらゲームオーバー
+	            if(this.manager.getLife() <= 0) {
+	            	initGame();
+	            }
             }
         }
         

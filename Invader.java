@@ -26,7 +26,6 @@ public class Invader extends JFrame {
         MainPanel mainPanel = new MainPanel(manager);
         // サイドパネルの作成と設定
         SidePanel sidePanel = new SidePanel(manager);
-        sidePanel .setBackground(Color.gray);
         
         //フレームを作成してパネルを追加
         Container contentPane = this.getContentPane();

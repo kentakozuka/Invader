@@ -5,13 +5,23 @@
  */
 public class Manager {
 	
+	// プレイヤーのライフ数
+    public static final int LIFE = 5;
+    // ステージ数
+    public static final int NUM_STAGE = 1;
+    
+	
+    //変数の宣言
 	private int numDeadAlien;
 	private int numDestroyedMeteorite;
 	private int point;
 	private int life;
+	// 現在のステージ
+    private int stage = 0;
 	
 	
 
+	
 	/**
 	 * コンストラクタ
 	 */
@@ -19,7 +29,12 @@ public class Manager {
 		numDeadAlien = 0;
 		numDestroyedMeteorite = 0;
 		point = 0;
-		this.life = 5;
+		this.setLife(Manager.LIFE);
+	}
+	public void initSetting() {
+		this.setLife(Manager.LIFE);
+		this.setNumDeadAlien(0);
+		this.setNumDestroyedMeteorite(0);
 	}
 	
 	/**
@@ -28,16 +43,8 @@ public class Manager {
 	 * @return
 	 */
 	public int getPoint() {
-		countPoint();
-		return this.point;
+		return this.numDeadAlien*10 + this.numDestroyedMeteorite*2;
 	}
-	/**
-	 * 得点計算メソッド
-	 */
-	public void countPoint() {
-		point = numDeadAlien*10 + numDestroyedMeteorite*2;
-	}
-	
 	/**
 	 * 倒したエイリアンの数のインクリメント関数
 	 */
@@ -49,6 +56,12 @@ public class Manager {
 	 */
 	public void incrementNumDestroyedMeteorite() {
 		this.numDestroyedMeteorite++;
+	}
+	/**
+	 * ライフのディクリメント関数
+	 */
+	public void decrementLife() {
+		this.life--;
 	}
 
 	/**
@@ -87,7 +100,7 @@ public class Manager {
 	 * @return
 	 */
 	public int getLife() {
-		return life;
+		return this.life;
 	}
 
 	/**
@@ -96,5 +109,12 @@ public class Manager {
 	 */
 	public void setLife(int life) {
 		this.life = life;
+	}	
+	/**
+	 * ステージ数のゲッター
+	 * @return
+	 */
+	public int getStage() {
+		return stage;
 	}
 }
