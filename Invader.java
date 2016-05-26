@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Label;
 
@@ -7,7 +8,7 @@ import javax.swing.JFrame;
 /**
  * インベーダーゲーム本体
  * 
- * @author anonimous
+ * @author anonymous
  *  
  */
 public class Invader extends JFrame {
@@ -17,13 +18,16 @@ public class Invader extends JFrame {
 	// コンストラクタ
     public Invader() {
         // タイトルを設定
-        setTitle("サウンドエンジンテスト");
+        setTitle("インベーダー2016");
         // サイズ変更不可
         setResizable(false);
+        // マネージャーを作成
+        Manager manager = new Manager();
         // メインパネルを作成
-        MainPanel mainPanel = new MainPanel();
-        // サイドパネルを作成
-        SidePanel sidePanel = new SidePanel();
+        MainPanel mainPanel = new MainPanel(manager);
+        // サイドパネルの作成と設定
+        SidePanel sidePanel = new SidePanel(manager);
+        sidePanel .setBackground(Color.gray);
         
         //フレームを作成してパネルを追加
         Container contentPane = this.getContentPane();

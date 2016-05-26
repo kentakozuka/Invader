@@ -51,11 +51,10 @@ public class MainPanel extends JPanel implements Runnable,
     private static final int NUM_BOSS_BEAM = 20;
    
 
-
 	// ステージ数
     private static final int NUM_STAGE = 1;
     // 各インスタンスの宣言
-    private Manager manager = null;
+    private Manager manager;
     private Player player;
     private Shot[] shots;
     private Alien[] aliens;
@@ -83,7 +82,9 @@ public class MainPanel extends JPanel implements Runnable,
     // サウンド
     private static String[] soundNames = {"bom28_a.wav", "puu38.wav", "puu51.wav"};
     // コンストラクタ
-    public MainPanel() {
+    public MainPanel(Manager manager) {
+    	//マネジャーを受け取る
+    	this.manager = manager;
         // パネルの推奨サイズを設定、pack()するときに必要
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         // パネルがキー入力を受け付けるようにする
@@ -92,6 +93,7 @@ public class MainPanel extends JPanel implements Runnable,
         // ゲームの初期化
         initGame();
     
+        //Randomインスタンスの生成・代入
         rand = new Random();
 
         // サウンドをロード
@@ -117,13 +119,10 @@ public class MainPanel extends JPanel implements Runnable,
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         // BGMを再生
         MidiEngine.play(0);
-        
         // キーイベントリスナーを登録
         addKeyListener(this);
-
         // ゲームループ開始
         this.gameLoop = new Thread(this);
         this.gameLoop.start();
@@ -154,8 +153,6 @@ public class MainPanel extends JPanel implements Runnable,
             // 再描画            
             this.repaint();
             
-            
-            
             // 休止
             try {
                 Thread.sleep(20);
@@ -170,16 +167,8 @@ public class MainPanel extends JPanel implements Runnable,
      */
     private void initGame() {
     	
-    	// Managerの生成。初回ならラベルに貼り付け
-       	if(this.manager == null) {
-	        this.manager = new Manager();
-	        this.pointDispLabel = new Label(new Integer(this.manager.getPoint()).toString());
-	        this.add(pointDispLabel);
-	    //以降は以降はフィールドを0に初期化
-    	} else {
-    		this.manager.setNumDeadAlien(0);
-    		this.manager.setNumDestroyedMeteorite(0);
-    	}
+    	this.manager.setNumDeadAlien(0);
+    	this.manager.setNumDestroyedMeteorite(0);
         
         // プレイヤーを作成
         player = new Player(0, HEIGHT - 20, this);

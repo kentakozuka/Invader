@@ -21,7 +21,11 @@ import javax.swing.JPanel;
  * @author kenta
  *  
  */
-public class SidePanel extends JPanel {
+/**
+ * @author user
+ *
+ */
+public class SidePanel extends JPanel implements Runnable{
 	
 
 	// 得点ラベル
@@ -29,24 +33,36 @@ public class SidePanel extends JPanel {
     // パネルサイズ
     public static final int WIDTH = 200;
     public static final int HEIGHT = 600;
-    
+    //マネージャ
     Manager manager;
+    //ゲームループ
+    Thread gameLoop;
     
     
-    public SidePanel() {
+    /**
+     * コンストラクタ
+     * @param manager
+     */
+    public SidePanel(Manager manager) {
         // パネルの推奨サイズを設定、pack()するときに必要
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         // パネルがキー入力を受け付けるようにする
         setFocusable(true);
-        // マネージャー
-        
+        // マネージャーを受け取る
+        this.manager = manager;
+        // ラベルの生成と追加
+        this.pointDispLabel = new Label(new Integer(this.manager.getPoint()).toString());
+        this.pointDispLabel.setBackground(Color.white);
+        this.add(pointDispLabel);
+        // ゲームループ開始
+        this.gameLoop = new Thread(this);
+        this.gameLoop.start();
     }
     public void run() {
         while (true) {
         	
             //得点ラベルセット
-            pointDispLabel.setText(new Integer(this.manager.getPoint()).toString());
-            
+            this.pointDispLabel.setText(new Integer(this.manager.getPoint()).toString());
             
             // 休止
             try {
