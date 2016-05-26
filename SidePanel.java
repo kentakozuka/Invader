@@ -105,7 +105,7 @@ public class SidePanel extends JPanel implements Runnable{
             this.pointLabel.setText("SCORE : " + new Integer(this.manager.getPoint()).toString());
             this.lifeLabel.setText("YOUR LIFE : " + new Integer(this.manager.getLife()).toString());
             this.stageLabel.setText("STAGE : " + new Integer(this.manager.getStage()).toString());
-            this.timeLabel.setText("TIME : " + new Float(this.manager.getElapsedTime()).toString().substring(0, 5));
+            this.timeLabel.setText("TIME : " + new Float(this.manager.getElapsedTime()).toString());
             
             // 休止
             try {
